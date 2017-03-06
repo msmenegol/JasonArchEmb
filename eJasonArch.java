@@ -27,15 +27,20 @@ public class eJasonArch extends AgArch {
     catch(Exception e){e.printStackTrace();}
   }
     // this method just add some perception for the agent
-/*
-    @Override
-    public List<Literal> perceive() {
-        List<Literal> l = new ArrayList<Literal>();
-        String position = bulb.SendReceive("position");
-        l.add(Literal.parseLiteral(position)); //message should be pos(x,y,z)
-        return l;
-    }
-*/
+
+  @Override
+  public List<Literal> perceive() {
+      List<Literal> p = new ArrayList<Literal>();//super.perceive();
+      p.add(ASSyntax.createLiteral("waypoint",
+                                    ASSyntax.createNumber(this.waypoint.getX()),
+                                    ASSyntax.createNumber(this.waypoint.getY()),
+                                    ASSyntax.createNumber(this.waypoint.getZ())));
+
+      //String position = bulb.SendReceive("position");
+      //l.add(Literal.parseLiteral(position)); //message should be pos(x,y,z)
+      return p;
+  }
+
     // this method get the agent actions
     @Override
     public void act(ActionExec move) {
