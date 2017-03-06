@@ -6,9 +6,9 @@ public class P3d {
   private double z;
 
   public P3d(){
-    this.x = null;
-    this.y = null;
-    this.z = null;
+    this.x = Double.NaN;
+    this.y = Double.NaN;
+    this.z = Double.NaN;
   }
 
   public P3d(double a, double b, double c){
