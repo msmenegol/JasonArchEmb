@@ -7,7 +7,7 @@ import java.net.UnknownHostException;
 
 import jason.asSyntax.*;
 
-public class jasonBulb{
+public class JasonBulb{
   // socket object
   private Socket socket = null;
 
@@ -24,6 +24,8 @@ public class jasonBulb{
           e.printStackTrace();
       }
     System.out.println("connection established");
+
+
     // writes and receives the message
     //String message = "message123";
 

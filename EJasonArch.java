@@ -15,9 +15,9 @@ import java.util.*;
  *
  * The class must extend AgArch class to be used by the Jason engine.
  */
-public class eJasonArch extends AgArch {
+public class EJasonArch extends AgArch {
 
-  private jasonBulb bulb = new jasonBulb();
+  private JasonBulb bulb = new JasonBulb();
   private P3d position = new P3d(); //position right now
   private P3d waypoint = new P3d(); //waypoint that UAV is going to now
 
