@@ -6,9 +6,9 @@ public class P3d {
   private double z;
 
   public P3d(){
-    this.x = 0;
-    this.y = 0;
-    this.z = 0;
+    this.x = null;
+    this.y = null;
+    this.z = null;
   }
 
   public P3d(double a, double b, double c){
