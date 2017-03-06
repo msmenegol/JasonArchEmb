@@ -3,4 +3,4 @@
 !start.
 
 +!start
-  <-  move.
+  <-  move(100,200,300).
