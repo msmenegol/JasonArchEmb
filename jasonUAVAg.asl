@@ -1,0 +1,6 @@
+
+/* Plans */
+!start.
+
++!start
+  <-  move.

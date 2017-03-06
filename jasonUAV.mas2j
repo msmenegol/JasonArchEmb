@@ -1,0 +1,26 @@
+/*
+ * This example shows how to develop an application that
+ * uses both
+ *  - a usual Jason environment and
+ *  - a CArtAgO environment
+ *
+ * see the code of MixedEnvironment and MixedAgentArch for details.
+ *
+ */
+
+MAS jasonUAV{
+
+    infrastructure: Centralised
+
+    //environment: MixedEnvironment // this class uses normal Jason environment and also CArtAgO environment
+
+    agents:
+        jasonUAVAg
+          agentArchClass eJasonArch; // architecture that deal with Jason vs CArtAgO environment
+
+    //classpath: "/Users/jomi/Jason/svn-jason/lib/cartago.jar";
+    //           "/Users/jomi/Jason/svn-jason/lib/c4jason.jar";
+
+    //aslSourcePath:
+    //    "src/asl";
+}
