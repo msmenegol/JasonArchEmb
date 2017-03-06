@@ -6,6 +6,7 @@ import jason.infra.centralised.BaseCentralisedMAS;
 
 import java.util.*;
 
+
 //import jasonBulb;//client class
 
 /**
@@ -17,8 +18,8 @@ import java.util.*;
 public class eJasonArch extends AgArch {
 
   private jasonBulb bulb = new jasonBulb();
-  private Point3d position = new Point3d(); //position right now
-  private Point3d waypoint = new Point3d(); //waypoint that UAV is going to now
+  private P3d position = new P3d(); //position right now
+  private P3d waypoint = new P3d(); //waypoint that UAV is going to now
 
   @Override
   public void init(){
@@ -37,9 +38,29 @@ public class eJasonArch extends AgArch {
 */
     // this method get the agent actions
     @Override
-    public void act(ActionExec move(x,y,z) {
-        getTS().getLogger().info("Agent " + getAgName() + " is doing: " + move.getActionTerm().getFunctor() + " to " + move.getActionTerm().getTerm(0) + ", " + move.getActionTerm().getTerm(1) + ", " + move.getActionTerm().getTerm(2));
-        String s = bulb.SendReceive("move" + "(" + x + "," + y + "," + z + ")");
+    public void act(ActionExec move) {
+
+        //getting args from move(x,y,z)
+        double x = Double.NaN;
+        double y = Double.NaN;
+        double z = Double.NaN;
+        try{
+          x = ((NumberTerm) move.getActionTerm().getTerm(0)).solve();
+          y = ((NumberTerm) move.getActionTerm().getTerm(1)).solve();
+          z = ((NumberTerm) move.getActionTerm().getTerm(2)).solve();}
+        catch(Exception e){
+          e.printStackTrace();
+        }
+
+        getTS().getLogger().info("Agent " + getAgName() + " is doing: " + move.getActionTerm().getFunctor() + " to " + x + ", " + y + ", " + z);
+
+        String s = bulb.SendReceive("move("+ x + "," + y + "," + z + ")");
+        //subsistute the following by some kind of parsing
+        System.out.println(s);
+        if(s.equals("move("+x+","+y+","+z+")")){
+          this.waypoint.set(x,y,z);
+        }
+        System.out.println(this.waypoint.getX());
         // set that the execution was ok
         //move.setResult(true);
         //actionExecuted(move);
