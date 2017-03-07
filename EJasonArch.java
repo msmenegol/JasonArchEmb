@@ -3,7 +3,6 @@ import jason.architecture.*;
 import jason.asSemantics.*;
 import jason.asSyntax.*;
 import jason.infra.centralised.BaseCentralisedMAS;
-
 import java.util.*;
 
 
@@ -18,8 +17,9 @@ import java.util.*;
 public class EJasonArch extends AgArch {
 
   //JasonBulb makes the interface between the Agent and the rest of the system
-  private JasonBulb bulb = new JasonBulb();
-  Thread t = new Thread(bulb);
+  private JasonBulb bulb = new JasonBulb(this);
+  Thread bulbThread = new Thread(bulb);
+  List<String> emergencyList = new ArrayList<String>();
 
   //Application specific attributes
   private P3d position = new P3d(); //position right now
@@ -30,8 +30,10 @@ public class EJasonArch extends AgArch {
     //initialize the bulb
     //try{bulb.init();}
     //catch(Exception e){e.printStackTrace();}
-    t.setDaemon(true);
-    t.start();
+    bulbThread.setDaemon(true);
+    bulbThread.start();
+    //while(!bulb.isReady());//wait for it to initialize properly
+
   }
     // this method just add some perception for the agent
 
@@ -66,9 +68,13 @@ public class EJasonArch extends AgArch {
 
         getTS().getLogger().info("Agent " + getAgName() + " is doing: " + move.getActionTerm().getFunctor() + " to " + x + ", " + y + ", " + z);
 
-        String s = bulb.SendReceive("move("+ x + "," + y + "," + z + ")");
+        //keep trying until it's ready
+        String s;
+        while((s = bulb.sendReceive("move("+ x + "," + y + "," + z + ")")).equals("notReady")){System.out.println(s);}
         //subsistute the following by some kind of parsing
+        if(s == null) System.out.println("s is null");
         System.out.println(s);
+
         if(s.equals("move("+x+","+y+","+z+")")){
           this.waypoint.set(x,y,z);
         }
@@ -76,6 +82,11 @@ public class EJasonArch extends AgArch {
         // set that the execution was ok
         //move.setResult(true);
         //actionExecuted(move);
+    }
+
+    public void emergency(String emergencyID){
+      emergencyList.add(emergencyID);
+      //add emergencyID directly to belief base
     }
 
     //@Override
