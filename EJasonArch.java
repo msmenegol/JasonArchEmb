@@ -17,14 +17,21 @@ import java.util.*;
  */
 public class EJasonArch extends AgArch {
 
+  //JasonBulb makes the interface between the Agent and the rest of the system
   private JasonBulb bulb = new JasonBulb();
+  Thread t = new Thread(bulb);
+
+  //Application specific attributes
   private P3d position = new P3d(); //position right now
-  private P3d waypoint = new P3d(); //waypoint that UAV is going to now
+  private P3d waypoint = new P3d(); //waypoint that UAV will be going to now
 
   @Override
   public void init(){
-    try{bulb.init();}
-    catch(Exception e){e.printStackTrace();}
+    //initialize the bulb
+    //try{bulb.init();}
+    //catch(Exception e){e.printStackTrace();}
+    t.setDaemon(true);
+    t.start();
   }
     // this method just add some perception for the agent
 

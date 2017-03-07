@@ -7,31 +7,23 @@ import java.net.UnknownHostException;
 
 import jason.asSyntax.*;
 
-public class JasonBulb{
+public class JasonBulb implements Runnable{
   // socket object
   private Socket socket = null;
 
-  public void init() throws UnknownHostException,   IOException, ClassNotFoundException {
-    // class instance
-    //jasonBulb client = new jasonBulb();
-
+  public void run() {
     // socket tcp connection
     String ip = "localhost";
     int port = 6969;
     try{
         this.socketConnect(ip, port);
-      } catch (UnknownHostException e) {
-          e.printStackTrace();
+      } catch (Exception e) {
+        e.printStackTrace();
       }
     System.out.println("connection established");
-
-
-    // writes and receives the message
-    //String message = "message123";
-
-    //System.out.println("Sending: " + message);
-    //String returnStr = client.echo(message);
-    //System.out.println("Receiving: " + returnStr);
+    while(true){
+      //run thread to check for interrupts
+    }
   }
     // make the connection with the socket
   private void socketConnect(String ip, int port) throws UnknownHostException, IOException {
