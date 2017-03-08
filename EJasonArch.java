@@ -86,7 +86,7 @@ public class EJasonArch extends AgArch {
         */
         //keep trying until it's ready
         //String s = action.getActionTerm().getFunctor() + "("+ x + "," + y + "," + z + ")";
-        System.out.println(action.toString());
+        //System.out.println(action.toString());
         String s = actionToString(action);
         System.out.println("action is " + s);
 
@@ -95,7 +95,7 @@ public class EJasonArch extends AgArch {
         if(done){
           //action was sent
           //wait for arrival of confirmation
-          waitingConfirmList.add(action);
+          waitingConfirmList.put(action,actionToString(action));
         } else {
           //action was not sent. Do something about it
           System.out.println("NotDone");
@@ -180,6 +180,16 @@ public class EJasonArch extends AgArch {
     }
 
     public void confirmAction(String actionStr){
+      Iterator it = waitingConfirmList.entrySet().iterator();
+      while(it.hasNext()){
+        Map.Entry pair = (Map.Entry)it.next();
+        if(pair.getValue().equals(actionStr)){
+          //set that the execution was ok
+          ((ActionExec)pair.getKey()).setResult(true);
+          actionExecuted((ActionExec)pair.getKey());
+          it.remove();
+        }
+      }
     }
 
 
