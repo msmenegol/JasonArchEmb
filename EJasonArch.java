@@ -22,7 +22,6 @@ public class EJasonArch extends AgArch {
 
   public List<Literal> emergencyList = new ArrayList<Literal>();
 
-  public static final int maxTries = 10;
   public static final int holdTime = 100;
 
   //Application specific attributes
