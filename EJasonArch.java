@@ -179,7 +179,8 @@ public class EJasonArch extends AgArch {
       return s;
     }
 
-
+    public void confirmAction(String actionStr){
+    }
 
 
 
