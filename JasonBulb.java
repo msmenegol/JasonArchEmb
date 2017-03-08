@@ -66,22 +66,25 @@ public class JasonBulb implements Runnable{
         if(this.socket.getInetAddress().isReachable(timeout)){
           BufferedReader in = new BufferedReader(new InputStreamReader(getSocket().getInputStream()));
 
-          String message = in.readLine();
-
-          if(isEmergency(message)){
-            cortex.emergency(parseEmergency(message));
-          } else {
-            this.mailbox.add(message);
+          System.out.println("reading");
+          String message;
+          while((message = in.readLine())!=null){
+            if(isEmergency(message)){
+              System.out.println("sendEm");
+              cortex.emergency(parseEmergency(message));
+            } else {
+              this.mailbox.add(message);
+            }
           }
         }
       } catch(Exception e) {
-        e.printStackTrace();
+          e.printStackTrace();
+        }
       }
-    }
   }
-
   private boolean isEmergency(String s){
-    if(s!=null && s.substring(0, 1).equals("!")){return true;}//emergency messages begin with !
+    System.out.println("checking em on" + s);
+    if(!s.isEmpty()){if(s.substring(0, 1).equals("!")){return true;}}//emergency messages begin with !
     return false;
   }
 
