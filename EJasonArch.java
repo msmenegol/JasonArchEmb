@@ -21,6 +21,7 @@ public class EJasonArch extends AgArch {
   Thread bulbThread = new Thread(bulb);
 
   public List<Literal> emergencyList = new ArrayList<Literal>();
+  private List<ActionExec> waitingConfirmList = new ArrayList<ActionExec>();
 
   //Application specific attributes
 //  private P3d position = new P3d(); //position right now
@@ -67,7 +68,7 @@ public class EJasonArch extends AgArch {
 
         List<Term> terms = action.getActionTerm().getTerms();
 
-
+        /*
         //getting args from move(x,y,z)
         double x = Double.NaN;
         double y = Double.NaN;
@@ -81,7 +82,7 @@ public class EJasonArch extends AgArch {
         }
 
         getTS().getLogger().info("Agent " + getAgName() + " is doing: " + action.getActionTerm().getFunctor() + " to " + x + ", " + y + ", " + z);
-
+        */
         //keep trying until it's ready
         //String s = action.getActionTerm().getFunctor() + "("+ x + "," + y + "," + z + ")";
         String s = actionToString(action);
@@ -105,7 +106,7 @@ public class EJasonArch extends AgArch {
           //do something about it
           System.out.println("NotConfirmed");
         }
-
+        /*
         waypoint = ASSyntax.createLiteral("waypoint",
                                       ASSyntax.createNumber(x),
                                       ASSyntax.createNumber(y),
@@ -120,6 +121,7 @@ public class EJasonArch extends AgArch {
         // set that the execution was ok
         //action.setResult(true);
         //actionExecuted(action);
+        */
     }
 
     public void addEmergency(String emergencyID){
