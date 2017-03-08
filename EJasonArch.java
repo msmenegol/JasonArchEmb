@@ -27,10 +27,10 @@ public class EJasonArch extends AgArch {
 
   //Application specific attributes
 //  private P3d position = new P3d(); //position right now
-  /*private Literal position = ASSyntax.createLiteral("position",
+  private Literal position = ASSyntax.createLiteral("position",
                                 ASSyntax.createNumber(0),
                                 ASSyntax.createNumber(0),
-                                ASSyntax.createNumber(0));*/
+                                ASSyntax.createNumber(0));
 
   private Literal waypoint = ASSyntax.createLiteral("waypoint",
                                 ASSyntax.createNumber(0),
@@ -90,17 +90,9 @@ public class EJasonArch extends AgArch {
         String s = convertAction(action);
         System.out.println("action is " + s);
 
-        while(((done = bulb.bulbSend(s))==false) && tries<maxTries){
-          System.out.println("notSent");
-          tries++;
-          try{
-            Thread.sleep(holdTime);
-          } catch(Exception e){e.printStackTrace();}
-        }
+        done = bulb.bulbSend(s);
 
-        tries = 0;
-
-        if(done == false){
+        if(!done){
           //action did not go through
           //do something about it
           System.out.println("NotDone");
@@ -109,15 +101,9 @@ public class EJasonArch extends AgArch {
         //if(s == null) System.out.println("s is null");
         //System.out.println(s);
 
-        while(((confirmed = bulb.isInMailbox(s))==false) && tries<maxTries){//wait for the confirmation
-          System.out.println("notReceived");
-          tries++;
-          try{
-            Thread.sleep(holdTime);
-          } catch(Exception e){e.printStackTrace();}
-        }
+        confirmed = bulb.isInMailbox(s);//wait for the confirmation
 
-        if(confirmed == false){
+        if(!confirmed){
           //action did not go through
           //do something about it
           System.out.println("NotConfirmed");
