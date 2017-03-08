@@ -60,6 +60,7 @@ public class EJasonArch extends AgArch {
     public void act(ActionExec move) {
         int tries = 0;
         boolean done = false;
+        boolean confirmed = false;
 
         //getting args from move(x,y,z)
         double x = Double.NaN;
@@ -97,12 +98,18 @@ public class EJasonArch extends AgArch {
         //if(s == null) System.out.println("s is null");
         //System.out.println(s);
 
-        while((!bulb.isInMailbox(s)) && tries<maxTries){//wait for the confirmation
+        while(((confirmed = bulb.isInMailbox(s))==false) && tries<maxTries){//wait for the confirmation
           System.out.println("notReceived");
           tries++;
           try{
             Thread.sleep(holdTime);
           } catch(Exception e){e.printStackTrace();}
+        }
+
+        if(confirmed == false){
+          //action did not go through
+          //do something about it
+          System.out.println("NotConfirmed");
         }
 
         this.waypoint.set(x,y,z);
