@@ -22,8 +22,6 @@ public class EJasonArch extends AgArch {
 
   public List<Literal> emergencyList = new ArrayList<Literal>();
 
-  public static final int holdTime = 100;
-
   //Application specific attributes
 //  private P3d position = new P3d(); //position right now
   private Literal position = ASSyntax.createLiteral("position",
