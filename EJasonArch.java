@@ -194,6 +194,10 @@ public class EJasonArch extends AgArch {
       }
     }
 
+    public boolean isAction(String actionStr){
+      return true;
+    }
+
 
 
     //@Override

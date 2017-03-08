@@ -83,7 +83,7 @@ public class JasonBulb implements Runnable{
           if(isEmergency(message)){//if it's an emergency
             System.out.println("sendEm");
             cortex.addEmergency(parseEmergency(message));
-          } else if(isAction(message)){//if it refers to an action
+          } else if(cortex.isAction(message)){//if it refers to an action
             cortex.confirmAction(decodeAction(message));//confirm it's execution
           } else {
             this.mailbox.add(message);//add percepts to mailbox
