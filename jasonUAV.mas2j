@@ -16,7 +16,7 @@ MAS jasonUAV{
 
     agents:
         jasonUAVAg
-          agentArchClass eJasonArch; // architecture that deal with Jason vs CArtAgO environment
+          agentArchClass EJasonArch; // architecture that deal with Jason vs CArtAgO environment
 
     //classpath: "/Users/jomi/Jason/svn-jason/lib/cartago.jar";
     //           "/Users/jomi/Jason/svn-jason/lib/c4jason.jar";
