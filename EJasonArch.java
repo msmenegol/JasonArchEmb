@@ -19,7 +19,11 @@ public class EJasonArch extends AgArch {
   //JasonBulb makes the interface between the Agent and the rest of the system
   private JasonBulb bulb = new JasonBulb(this);
   Thread bulbThread = new Thread(bulb);
-  List<String> emergencyList = new ArrayList<String>();
+
+  public List<String> emergencyList = new ArrayList<String>();
+
+  public static final int maxTries = 10;
+  public static final int holdTime = 100;
 
   //Application specific attributes
   private P3d position = new P3d(); //position right now
@@ -53,7 +57,8 @@ public class EJasonArch extends AgArch {
     // this method get the agent actions
     @Override
     public void act(ActionExec move) {
-
+        int tries = 0;
+        boolean done = false;
         //getting args from move(x,y,z)
         double x = Double.NaN;
         double y = Double.NaN;
@@ -69,15 +74,29 @@ public class EJasonArch extends AgArch {
         getTS().getLogger().info("Agent " + getAgName() + " is doing: " + move.getActionTerm().getFunctor() + " to " + x + ", " + y + ", " + z);
 
         //keep trying until it's ready
-        String s;
-        while((s = bulb.sendReceive("move("+ x + "," + y + "," + z + ")")).equals("notReady")){System.out.println(s);}
-        //subsistute the following by some kind of parsing
-        if(s == null) System.out.println("s is null");
-        System.out.println(s);
-
-        if(s.equals("move("+x+","+y+","+z+")")){
-          this.waypoint.set(x,y,z);
+        String s = "move("+ x + "," + y + "," + z + ")";
+        while(((done = bulb.bulbSend(s))==false) && tries<maxTries){
+          System.out.println("notSent");
+          try{
+            wait(holdTime);
+          } catch(Exception e){e.printStackTrace();}
         }
+
+        if(done == false){
+          //action did not go through
+          //do something about it
+          System.out.println("NotDone");
+        }
+        //subsistute the following by some kind of parsing
+        //if(s == null) System.out.println("s is null");
+        //System.out.println(s);
+
+        while(!bulb.isInMailbox(s));
+        this.waypoint.set(x,y,z);
+
+        //if(s.equals("move("+x+","+y+","+z+")")){
+
+        //}
         System.out.println(this.waypoint.getX());
         // set that the execution was ok
         //move.setResult(true);
