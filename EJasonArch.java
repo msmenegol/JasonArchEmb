@@ -57,7 +57,8 @@ public class EJasonArch extends AgArch {
 
     // this method get the agent actions
     @Override
-    public void act(ActionExec move) {
+    public void act(ActionExec action) {
+        //general variables for action handling
         int tries = 0;
         boolean done = false;
         boolean confirmed = false;
@@ -67,14 +68,14 @@ public class EJasonArch extends AgArch {
         double y = Double.NaN;
         double z = Double.NaN;
         try{
-          x = ((NumberTerm) move.getActionTerm().getTerm(0)).solve();
-          y = ((NumberTerm) move.getActionTerm().getTerm(1)).solve();
-          z = ((NumberTerm) move.getActionTerm().getTerm(2)).solve();}
+          x = ((NumberTerm) action.getActionTerm().getTerm(0)).solve();
+          y = ((NumberTerm) action.getActionTerm().getTerm(1)).solve();
+          z = ((NumberTerm) action.getActionTerm().getTerm(2)).solve();}
         catch(Exception e){
           e.printStackTrace();
         }
 
-        getTS().getLogger().info("Agent " + getAgName() + " is doing: " + move.getActionTerm().getFunctor() + " to " + x + ", " + y + ", " + z);
+        getTS().getLogger().info("Agent " + getAgName() + " is doing: " + action.getActionTerm().getFunctor() + " to " + x + ", " + y + ", " + z);
 
         //keep trying until it's ready
         String s = "move("+ x + "," + y + "," + z + ")";
@@ -116,8 +117,8 @@ public class EJasonArch extends AgArch {
 
         System.out.println(this.waypoint.getX());
         // set that the execution was ok
-        //move.setResult(true);
-        //actionExecuted(move);
+        //action.setResult(true);
+        //actionExecuted(action);
     }
 
     public void emergency(String emergencyID){
