@@ -77,13 +77,16 @@ public class EJasonArch extends AgArch {
 
         //keep trying until it's ready
         String s = "move("+ x + "," + y + "," + z + ")";
+
         while(((done = bulb.bulbSend(s))==false) && tries<maxTries){
           System.out.println("notSent");
-
+          tries++;
           try{
             Thread.sleep(holdTime);
           } catch(Exception e){e.printStackTrace();}
         }
+
+        tries = 0;
 
         if(done == false){
           //action did not go through
@@ -94,12 +97,16 @@ public class EJasonArch extends AgArch {
         //if(s == null) System.out.println("s is null");
         //System.out.println(s);
 
-        while(!bulb.isInMailbox(s));
+        while((!bulb.isInMailbox(s)) && tries<maxTries){//wait for the confirmation
+          System.out.println("notReceived");
+          tries++;
+          try{
+            Thread.sleep(holdTime);
+          } catch(Exception e){e.printStackTrace();}
+        }
+
         this.waypoint.set(x,y,z);
 
-        //if(s.equals("move("+x+","+y+","+z+")")){
-
-        //}
         System.out.println(this.waypoint.getX());
         // set that the execution was ok
         //move.setResult(true);
@@ -107,8 +114,8 @@ public class EJasonArch extends AgArch {
     }
 
     public void emergency(String emergencyID){
-      String[] strTerms = emergencyID.split("\\(");
-      if(!strTerms[0].isEmpty()){
+      String[] strTerms = emergencyID.split("\\(");//get functor, aka thing before "("
+      if(!strTerms[0].isEmpty()){//if there is a functor
         emergencyList.removeAll(findFunctor(emergencyList, strTerms[0]));//remove all emergencies with same functor
       }
       emergencyList.add(ASSyntax.createLiteral(emergencyID));
