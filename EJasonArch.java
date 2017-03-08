@@ -27,8 +27,15 @@ public class EJasonArch extends AgArch {
 
   //Application specific attributes
 //  private P3d position = new P3d(); //position right now
-  private Literal waypoint = new Literal();
-  private Literal position = new Literal();
+  private Literal position = ASSyntax.createLiteral("position",
+                                ASSyntax.createNumber(0),
+                                ASSyntax.createNumber(0),
+                                ASSyntax.createNumber(0));
+
+  private Literal waypoint = ASSyntax.createLiteral("waypoint",
+                                ASSyntax.createNumber(0),
+                                ASSyntax.createNumber(0),
+                                ASSyntax.createNumber(0));
 
   @Override
   public void init(){
@@ -45,10 +52,7 @@ public class EJasonArch extends AgArch {
   @Override
   public List<Literal> perceive() {
       List<Literal> p = new ArrayList<Literal>();//super.perceive();
-      p.add(ASSyntax.createLiteral("waypoint",
-                                    ASSyntax.createNumber(this.waypoint.getX()),
-                                    ASSyntax.createNumber(this.waypoint.getY()),
-                                    ASSyntax.createNumber(this.waypoint.getZ())));
+      p.add(waypoint);
 
       p.addAll(emergencyList);
       //String position = bulb.SendReceive("position");
@@ -125,8 +129,11 @@ public class EJasonArch extends AgArch {
                                       ASSyntax.createNumber(z));
 
         //this.waypoint.set(x,y,z);
-
-        System.out.println(waypoint.getTerm[1].solve());
+        double coordX=0;
+        try{
+          coordX = ((NumberTerm) waypoint.getTerm(0)).solve();
+        } catch(Exception e){e.printStackTrace();}
+        System.out.println(coordX);
         // set that the execution was ok
         //action.setResult(true);
         //actionExecuted(action);
