@@ -59,6 +59,7 @@ public class EJasonArch extends AgArch {
     public void act(ActionExec move) {
         int tries = 0;
         boolean done = false;
+
         //getting args from move(x,y,z)
         double x = Double.NaN;
         double y = Double.NaN;
@@ -77,8 +78,9 @@ public class EJasonArch extends AgArch {
         String s = "move("+ x + "," + y + "," + z + ")";
         while(((done = bulb.bulbSend(s))==false) && tries<maxTries){
           System.out.println("notSent");
+
           try{
-            wait(holdTime);
+            Thread.sleep(holdTime);
           } catch(Exception e){e.printStackTrace();}
         }
 
