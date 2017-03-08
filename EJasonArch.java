@@ -21,7 +21,8 @@ public class EJasonArch extends AgArch {
   Thread bulbThread = new Thread(bulb);
 
   private List<Literal> emergencyList = new ArrayList<Literal>();
-  private List<ActionExec> waitingConfirmList = new ArrayList<ActionExec>();
+
+  private Map<ActionExec,String> waitingConfirmList = new HashMap<ActionExec,String>();
 
   //Application specific attributes
 //  private P3d position = new P3d(); //position right now
@@ -85,14 +86,18 @@ public class EJasonArch extends AgArch {
         */
         //keep trying until it's ready
         //String s = action.getActionTerm().getFunctor() + "("+ x + "," + y + "," + z + ")";
+        System.out.println(action.toString());
         String s = actionToString(action);
         System.out.println("action is " + s);
 
         done = bulb.bulbSend(s);
 
-        if(!done){
-          //action did not go through
-          //do something about it
+        if(done){
+          //action was sent
+          //wait for arrival of confirmation
+          waitingConfirmList.add(action);
+        } else {
+          //action was not sent. Do something about it
           System.out.println("NotDone");
         }
         //subsistute the following by some kind of parsing
@@ -173,6 +178,7 @@ public class EJasonArch extends AgArch {
       s = s.substring(0, s.length()-1) + ")"; //take last ',' out and close with ')'
       return s;
     }
+
 
 
 
