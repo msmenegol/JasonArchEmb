@@ -27,10 +27,10 @@ public class EJasonArch extends AgArch {
 
   //Application specific attributes
 //  private P3d position = new P3d(); //position right now
-  private Literal position = ASSyntax.createLiteral("position",
+  /*private Literal position = ASSyntax.createLiteral("position",
                                 ASSyntax.createNumber(0),
                                 ASSyntax.createNumber(0),
-                                ASSyntax.createNumber(0));
+                                ASSyntax.createNumber(0));*/
 
   private Literal waypoint = ASSyntax.createLiteral("waypoint",
                                 ASSyntax.createNumber(0),
