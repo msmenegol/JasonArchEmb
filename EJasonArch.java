@@ -123,12 +123,27 @@ public class EJasonArch extends AgArch {
     }
 
     public void emergency(String emergencyID){
-      String[] strTerms = emergencyID.split("\\(");//get functor, aka thing before "("
+      String[] strTerms = emergencyID.split("[(),]");//get functor, aka thing before "("
       //System.out.println("EM IS: " + strTerms[0]);
       if(!strTerms[0].isEmpty()){//if there is a functor
         emergencyList.removeAll(findFunctor(emergencyList, strTerms[0]));//remove all emergencies with same functor
       }
-      emergencyList.add(ASSyntax.createLiteral(emergencyID));
+      Literal literalEm = ASSyntax.createLiteral(strTerms[0]);
+      if(strTerms.length>1){
+        for(int i=1; i < strTerms.length; i++){
+          if(strTerms[i].matches(".*\\d+.*")){//if there are number in the term
+            double number=0;
+            try{
+              number = Double.parseDouble(strTerms[i]);
+            }catch(Exception e){e.printStackTrace();}
+
+            literalEm.addTerm(ASSyntax.createNumber(number));
+          }else{ //otherwise, it's a string
+            literalEm.addTerm(ASSyntax.createString(strTerms[i]));
+          }
+        }
+      }
+      emergencyList.add(literalEm);
     }
 
     private List<Literal> findFunctor(List<Literal> list, String functor){
@@ -157,7 +172,6 @@ public class EJasonArch extends AgArch {
       return s;
     }
 
-    //private String stringToTerm()
 
     //@Override
     //public boolean canSleep() {
