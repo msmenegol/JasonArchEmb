@@ -63,6 +63,9 @@ public class EJasonArch extends AgArch {
         boolean done = false;
         boolean confirmed = false;
 
+        List<Term> terms = action.getActionTerm().getTerms();
+
+
         //getting args from move(x,y,z)
         double x = Double.NaN;
         double y = Double.NaN;
@@ -78,7 +81,9 @@ public class EJasonArch extends AgArch {
         getTS().getLogger().info("Agent " + getAgName() + " is doing: " + action.getActionTerm().getFunctor() + " to " + x + ", " + y + ", " + z);
 
         //keep trying until it's ready
-        String s = "move("+ x + "," + y + "," + z + ")";
+        //String s = action.getActionTerm().getFunctor() + "("+ x + "," + y + "," + z + ")";
+        String s = convertAction(action);
+        System.out.println("action is " + s);
 
         while(((done = bulb.bulbSend(s))==false) && tries<maxTries){
           System.out.println("notSent");
@@ -138,6 +143,22 @@ public class EJasonArch extends AgArch {
         }
       }
       return matches;
+    }
+
+    private String convertAction(ActionExec action){
+      String s = action.getActionTerm().getFunctor() + "(";
+      List<Term> terms = action.getActionTerm().getTerms();
+      for(Term term : terms){
+        if(term.isString()){
+          s = s + ((StringTerm) term).getString() + ",";
+        } else if(term.isNumeric()){
+          try{
+            s = s + Double.toString(((NumberTerm) term).solve()) + ",";
+          } catch(Exception e) {e.printStackTrace();}
+        }
+      }
+      s = s.substring(0, s.length()-1) + ")"; //take last ',' out and close with ')'
+      return s;
     }
 
     //@Override
