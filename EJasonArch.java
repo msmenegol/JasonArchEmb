@@ -26,8 +26,9 @@ public class EJasonArch extends AgArch {
   public static final int holdTime = 100;
 
   //Application specific attributes
-  private P3d position = new P3d(); //position right now
-  private P3d waypoint = new P3d(); //waypoint that UAV will be going to now
+//  private P3d position = new P3d(); //position right now
+  private Literal waypoint = new Literal();
+  private Literal position = new Literal();
 
   @Override
   public void init(){
@@ -118,9 +119,14 @@ public class EJasonArch extends AgArch {
           System.out.println("NotConfirmed");
         }
 
-        this.waypoint.set(x,y,z);
+        waypoint = ASSyntax.createLiteral("waypoint",
+                                      ASSyntax.createNumber(x),
+                                      ASSyntax.createNumber(y),
+                                      ASSyntax.createNumber(z));
 
-        System.out.println(this.waypoint.getX());
+        //this.waypoint.set(x,y,z);
+
+        System.out.println(waypoint.getTerm[1].solve());
         // set that the execution was ok
         //action.setResult(true);
         //actionExecuted(action);
