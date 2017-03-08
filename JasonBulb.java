@@ -10,6 +10,8 @@ public class JasonBulb implements Runnable{
   public static final int timeout = 1000;
   //parent architecture instance
   private EJasonArch cortex;
+  //ready
+  private boolean ready = false;
   // socket object
   private Socket socket;
   //in buffer
@@ -40,6 +42,8 @@ public class JasonBulb implements Runnable{
       this.out = new PrintWriter(getSocket().getOutputStream(), true);
     }catch(Exception e){e.printStackTrace();}
 
+    this.ready = true;
+
     while(true){
       bulbReceive();
     }
@@ -52,6 +56,7 @@ public class JasonBulb implements Runnable{
 
   public boolean bulbSend(String message){//return true if message was sent
     if(this.socket!=null){
+      while(!this.ready);
       try{
         if(this.socket.getInetAddress().isReachable(timeout)){
           //PrintWriter out = new PrintWriter(getSocket().getOutputStream(), true);
@@ -72,7 +77,6 @@ public class JasonBulb implements Runnable{
       try{
         if(this.socket.getInetAddress().isReachable(timeout)){
           //BufferedReader in = new BufferedReader(new InputStreamReader(getSocket().getInputStream()));
-
           System.out.println("reading");
           String message = this.in.readLine();
           System.out.println("message is " + message);
@@ -90,7 +94,7 @@ public class JasonBulb implements Runnable{
   }
 
   private boolean isEmergency(String s){
-    System.out.println("checking em on" + s);
+    System.out.println("checking on" + s);
     if(!s.isEmpty()){if(s.substring(0, 1).equals("!")){return true;}}//emergency messages begin with !
     return false;
   }
