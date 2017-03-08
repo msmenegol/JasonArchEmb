@@ -36,13 +36,13 @@ public class JasonBulb implements Runnable{
 
     System.out.println("[Connection established]");
     try{
-      BufferedReader in = new BufferedReader(new InputStreamReader(getSocket().getInputStream()));
-      PrintWriter out = new PrintWriter(getSocket().getOutputStream(), true);
+      this.in = new BufferedReader(new InputStreamReader(getSocket().getInputStream()));
+      this.out = new PrintWriter(getSocket().getOutputStream(), true);
     }catch(Exception e){e.printStackTrace();}
 
-    while(true){
+    //while(true){
       bulbReceive();
-    }
+    //}
   }
     // make the connection with the socket
   private void socketConnect(String ip, int port) throws UnknownHostException, IOException {
@@ -55,9 +55,10 @@ public class JasonBulb implements Runnable{
       try{
         if(this.socket.getInetAddress().isReachable(timeout)){
           //PrintWriter out = new PrintWriter(getSocket().getOutputStream(), true);
-          //out.println(message);
-        //out.close();
-          //return true;
+          System.out.println("sending");
+          this.out.println(message);
+          //out.close();
+          return true;
         }
       } catch (Exception e) {
         e.printStackTrace();
@@ -73,21 +74,21 @@ public class JasonBulb implements Runnable{
           //BufferedReader in = new BufferedReader(new InputStreamReader(getSocket().getInputStream()));
 
           System.out.println("reading");
-          String message;
-          while((message = in.readLine())!=null){
-            if(isEmergency(message)){
-              System.out.println("sendEm");
-              cortex.emergency(parseEmergency(message));
-            } else {
-              this.mailbox.add(message);
-            }
+          String message = this.in.readLine();
+          System.out.println("message is " + message);
+          if(isEmergency(message)){
+            System.out.println("sendEm");
+            cortex.emergency(parseEmergency(message));
+          } else {
+            this.mailbox.add(message);
           }
         }
       } catch(Exception e) {
-          e.printStackTrace();
-        }
+        e.printStackTrace();
       }
+    }
   }
+
   private boolean isEmergency(String s){
     System.out.println("checking em on" + s);
     if(!s.isEmpty()){if(s.substring(0, 1).equals("!")){return true;}}//emergency messages begin with !
