@@ -40,9 +40,9 @@ public class JasonBulb implements Runnable{
       this.out = new PrintWriter(getSocket().getOutputStream(), true);
     }catch(Exception e){e.printStackTrace();}
 
-    //while(true){
+    while(true){
       bulbReceive();
-    //}
+    }
   }
     // make the connection with the socket
   private void socketConnect(String ip, int port) throws UnknownHostException, IOException {
