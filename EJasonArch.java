@@ -20,7 +20,7 @@ public class EJasonArch extends AgArch {
   private JasonBulb bulb = new JasonBulb(this);
   Thread bulbThread = new Thread(bulb);
 
-  public List<String> emergencyList = new ArrayList<String>();
+  public List<Literal> emergencyList = new ArrayList<Literal>();
 
   public static final int maxTries = 10;
   public static final int holdTime = 100;
@@ -49,6 +49,7 @@ public class EJasonArch extends AgArch {
                                     ASSyntax.createNumber(this.waypoint.getY()),
                                     ASSyntax.createNumber(this.waypoint.getZ())));
 
+      p.addAll(emergencyList);
       //String position = bulb.SendReceive("position");
       //l.add(Literal.parseLiteral(position)); //message should be pos(x,y,z)
       return p;
@@ -106,7 +107,8 @@ public class EJasonArch extends AgArch {
     }
 
     public void emergency(String emergencyID){
-      emergencyList.add(emergencyID);
+      System.out.println("emAdded");
+      emergencyList.add(ASSyntax.createLiteral(emergencyID));
       //add emergencyID directly to belief base
     }
 
