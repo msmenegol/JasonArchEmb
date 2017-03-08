@@ -39,6 +39,7 @@ while True:
             if data:
                 print >>sys.stderr, 'sending data back to the client'
                 connection.sendall(encodeSock(data, JAVAPORT))
+                connection.sendall(encodeSock("!lowBat(5)",JAVAPORT))
             else:
                 print >>sys.stderr, 'no more data from', client_address
                 break
