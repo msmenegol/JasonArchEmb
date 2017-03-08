@@ -107,9 +107,10 @@ public class EJasonArch extends AgArch {
     }
 
     public void emergency(String emergencyID){
-      String[] strTerms = emergencyID.split("(");
-      String emFunctor = strTerms[0];
-      if(emergencyList.contains())
+      String[] strTerms = emergencyID.split("\\(");
+      if(!strTerms[0].isEmpty()){
+        emergencyList.removeAll(findFunctor(emergencyList, strTerms[0]));//remove all emergencies with same functor
+      }
       emergencyList.add(ASSyntax.createLiteral(emergencyID));
       //TODO: Change to add emergencyID directly to belief base
     }
