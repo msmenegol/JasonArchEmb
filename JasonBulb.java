@@ -81,7 +81,7 @@ public class JasonBulb implements Runnable{
   }
 
   private boolean isEmergency(String s){
-    //check if its emergency
+    if(s!=null && s.substring(0, 1).equals("!")){return true;}//emergency messages begin with !
     return false;
   }
 
@@ -93,6 +93,7 @@ public class JasonBulb implements Runnable{
     return this.mailbox.remove(message);
   }
 
+/*
     // writes and receives the full message int the socket (String)
   public String sendReceive(String message) {
     //System.out.println("beginning send");
@@ -126,6 +127,7 @@ public class JasonBulb implements Runnable{
     //System.out.println("socket is null");
     return "notReady";//try again
   }
+*/
 
     // get the socket instance
   private Socket getSocket() {
