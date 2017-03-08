@@ -12,7 +12,10 @@ public class JasonBulb implements Runnable{
   private EJasonArch cortex;
   // socket object
   private Socket socket;
-
+  //in buffer
+  private BufferedReader in;
+  //out buffer
+  private PrintWriter out;
   //mailbox
   private List<String> mailbox = new ArrayList<String>();
 
@@ -30,8 +33,12 @@ public class JasonBulb implements Runnable{
       } catch (Exception e) {
         e.printStackTrace();
       }
-    this.ready = true;
+
     System.out.println("[Connection established]");
+    try{
+      BufferedReader in = new BufferedReader(new InputStreamReader(getSocket().getInputStream()));
+      PrintWriter out = new PrintWriter(getSocket().getOutputStream(), true);
+    }catch(Exception e){e.printStackTrace();}
 
     while(true){
       bulbReceive();
@@ -47,10 +54,10 @@ public class JasonBulb implements Runnable{
     if(this.socket!=null){
       try{
         if(this.socket.getInetAddress().isReachable(timeout)){
-        PrintWriter out = new PrintWriter(getSocket().getOutputStream(), true);
-        out.println(message);
+          //PrintWriter out = new PrintWriter(getSocket().getOutputStream(), true);
+          //out.println(message);
         //out.close();
-        return true;
+          //return true;
         }
       } catch (Exception e) {
         e.printStackTrace();
@@ -63,7 +70,7 @@ public class JasonBulb implements Runnable{
     if(this.socket!=null){
       try{
         if(this.socket.getInetAddress().isReachable(timeout)){
-          BufferedReader in = new BufferedReader(new InputStreamReader(getSocket().getInputStream()));
+          //BufferedReader in = new BufferedReader(new InputStreamReader(getSocket().getInputStream()));
 
           System.out.println("reading");
           String message;
