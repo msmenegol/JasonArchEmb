@@ -84,7 +84,7 @@ public class EJasonArch extends AgArch {
 
         //keep trying until it's ready
         //String s = action.getActionTerm().getFunctor() + "("+ x + "," + y + "," + z + ")";
-        String s = convertAction(action);
+        String s = actionToString(action);
         System.out.println("action is " + s);
 
         done = bulb.bulbSend(s);
@@ -124,11 +124,11 @@ public class EJasonArch extends AgArch {
 
     public void emergency(String emergencyID){
       String[] strTerms = emergencyID.split("\\(");//get functor, aka thing before "("
+      //System.out.println("EM IS: " + strTerms[0]);
       if(!strTerms[0].isEmpty()){//if there is a functor
         emergencyList.removeAll(findFunctor(emergencyList, strTerms[0]));//remove all emergencies with same functor
       }
       emergencyList.add(ASSyntax.createLiteral(emergencyID));
-      //TODO: Change to add emergencyID directly to belief base
     }
 
     private List<Literal> findFunctor(List<Literal> list, String functor){
@@ -141,7 +141,7 @@ public class EJasonArch extends AgArch {
       return matches;
     }
 
-    private String convertAction(ActionExec action){
+    private String actionToString(ActionExec action){
       String s = action.getActionTerm().getFunctor() + "(";
       List<Term> terms = action.getActionTerm().getTerms();
       for(Term term : terms){
@@ -156,6 +156,8 @@ public class EJasonArch extends AgArch {
       s = s.substring(0, s.length()-1) + ")"; //take last ',' out and close with ')'
       return s;
     }
+
+    //private String stringToTerm()
 
     //@Override
     //public boolean canSleep() {
