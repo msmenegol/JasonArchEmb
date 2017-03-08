@@ -107,9 +107,21 @@ public class EJasonArch extends AgArch {
     }
 
     public void emergency(String emergencyID){
-      System.out.println("emAdded");
+      String[] strTerms = emergencyID.split("(");
+      String emFunctor = strTerms[0];
+      if(emergencyList.contains())
       emergencyList.add(ASSyntax.createLiteral(emergencyID));
-      //add emergencyID directly to belief base
+      //TODO: Change to add emergencyID directly to belief base
+    }
+
+    private List<Literal> findFunctor(List<Literal> list, String functor){
+      List<Literal> matches = new ArrayList<Literal>();
+      for(Literal object : list){
+        if(object.getFunctor().equals(functor)){
+          matches.add(object);
+        }
+      }
+      return matches;
     }
 
     //@Override
