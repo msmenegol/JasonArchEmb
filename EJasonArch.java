@@ -132,7 +132,7 @@ public class EJasonArch extends AgArch {
       if(strTerms.length>1){
         for(int i=1; i < strTerms.length; i++){
           if(strTerms[i].matches(".*\\d+.*")){//if there are numbers in the term
-            double number=0;
+            double number = Double.NaN;
             try{
               number = Double.parseDouble(strTerms[i]);
             }catch(Exception e){e.printStackTrace();}
