@@ -83,7 +83,8 @@ public class JasonBulb implements Runnable{
           if(isEmergency(message)){
             System.out.println("sendEm");
             cortex.addEmergency(parseEmergency(message));
-          } else {
+          } else if(isAction(message)){
+
             this.mailbox.add(message);
           }
         }
@@ -114,6 +115,10 @@ public class JasonBulb implements Runnable{
 
   private boolean isAction(String message){
     return true;
+  }
+
+  private String decodeAction(String message){
+    return message;
   }
 
 }
