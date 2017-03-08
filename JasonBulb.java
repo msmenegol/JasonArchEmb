@@ -12,8 +12,7 @@ public class JasonBulb implements Runnable{
   private EJasonArch cortex;
   // socket object
   private Socket socket;
-  // marks if connection was established
-  private boolean ready = false;
+
   //mailbox
   private List<String> mailbox = new ArrayList<String>();
 
