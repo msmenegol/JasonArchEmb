@@ -54,6 +54,7 @@ public class EJasonArch extends AgArch {
       p.add(waypoint);
 
       p.addAll(emergencyList);
+      p.addAll()
       //String position = bulb.SendReceive("position");
       //l.add(Literal.parseLiteral(position)); //message should be pos(x,y,z)
       return p;
@@ -103,7 +104,7 @@ public class EJasonArch extends AgArch {
         //subsistute the following by some kind of parsing
         //if(s == null) System.out.println("s is null");
         //System.out.println(s);
-
+        /*
         confirmed = bulb.isInMailbox(s);//wait for the confirmation
 
         if(!confirmed){
@@ -111,6 +112,7 @@ public class EJasonArch extends AgArch {
           //do something about it
           System.out.println("NotConfirmed");
         }
+        */
         /*
         waypoint = ASSyntax.createLiteral("waypoint",
                                       ASSyntax.createNumber(x),
