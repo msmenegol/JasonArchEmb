@@ -56,7 +56,7 @@ public class JasonBulb implements Runnable{
 
   public boolean bulbSend(String message){//return true if message was sent
     if(this.socket!=null){
-      while(!this.ready);
+      while(!this.ready);//do not try to send before buffers are set up
       try{
         if(this.socket.getInetAddress().isReachable(timeout)){
           //PrintWriter out = new PrintWriter(getSocket().getOutputStream(), true);
@@ -82,7 +82,7 @@ public class JasonBulb implements Runnable{
           System.out.println("message is " + message);
           if(isEmergency(message)){
             System.out.println("sendEm");
-            cortex.emergency(parseEmergency(message));
+            cortex.addEmergency(parseEmergency(message));
           } else {
             this.mailbox.add(message);
           }

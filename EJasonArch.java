@@ -122,7 +122,7 @@ public class EJasonArch extends AgArch {
         //actionExecuted(action);
     }
 
-    public void emergency(String emergencyID){
+    public void addEmergency(String emergencyID){
       String[] strTerms = emergencyID.split("[(),]");//get functor, aka thing before "("
       //System.out.println("EM IS: " + strTerms[0]);
       if(!strTerms[0].isEmpty()){//if there is a functor
@@ -131,7 +131,7 @@ public class EJasonArch extends AgArch {
       Literal literalEm = ASSyntax.createLiteral(strTerms[0]);
       if(strTerms.length>1){
         for(int i=1; i < strTerms.length; i++){
-          if(strTerms[i].matches(".*\\d+.*")){//if there are number in the term
+          if(strTerms[i].matches(".*\\d+.*")){//if there are numbers in the term
             double number=0;
             try{
               number = Double.parseDouble(strTerms[i]);
