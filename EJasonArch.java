@@ -20,7 +20,7 @@ public class EJasonArch extends AgArch {
   private JasonBulb bulb = new JasonBulb(this);
   Thread bulbThread = new Thread(bulb);
 
-  public List<Literal> emergencyList = new ArrayList<Literal>();
+  private List<Literal> emergencyList = new ArrayList<Literal>();
   private List<ActionExec> waitingConfirmList = new ArrayList<ActionExec>();
 
   //Application specific attributes
@@ -173,6 +173,7 @@ public class EJasonArch extends AgArch {
       s = s.substring(0, s.length()-1) + ")"; //take last ',' out and close with ')'
       return s;
     }
+
 
 
     //@Override
