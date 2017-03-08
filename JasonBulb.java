@@ -112,4 +112,8 @@ public class JasonBulb implements Runnable{
        return socket;
   }
 
+  private boolean isAction(String message){
+    return true;
+  }
+
 }
