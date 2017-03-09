@@ -60,7 +60,7 @@ public class JasonBulb implements Runnable{
       try{
         if(this.socket.getInetAddress().isReachable(timeout)){
           //PrintWriter out = new PrintWriter(getSocket().getOutputStream(), true);
-          System.out.println("sending");
+          System.out.println("sending " + message);
           this.out.println(message);
           //out.close();
           return true;
