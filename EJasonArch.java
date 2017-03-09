@@ -132,7 +132,7 @@ public class EJasonArch extends AgArch {
         */
     }
 
-    public void addEmergency(String emergencyID){
+    public void addState(String state){
       String[] strTerms = emergencyID.split("[(),]");//get functor, aka thing before "("
       //System.out.println("EM IS: " + strTerms[0]);
       if(!strTerms[0].isEmpty()){//if there is a functor
