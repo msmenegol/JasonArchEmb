@@ -17,6 +17,7 @@ import java.util.*;
 public class EJasonArch extends AgArch {
   //******************Editable variables*********************
   private static final String actionID = "!";
+  private static final String perceptID = "";
   //*********************************************************
 
 
@@ -208,7 +209,7 @@ public class EJasonArch extends AgArch {
     }
 
     private String encodeAction(String message){
-      return message;
+      return actionID+message;
     }
 
     public String decodePercept(String message){
