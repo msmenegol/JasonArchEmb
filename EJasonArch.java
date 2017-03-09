@@ -71,8 +71,8 @@ public class EJasonArch extends AgArch {
     public void act(ActionExec action) {
         //general variables for action handling
 
-        getTS().getLogger().info("Agent " + getAgName() + " is doing: " + action.getActionTerm().getFunctor() + " to " + x + ", " + y + ", " + z);
-        
+        //getTS().getLogger().info("Agent " + getAgName() + " is doing: " + action.getActionTerm().getFunctor() + " to " + x + ", " + y + ", " + z);
+
 
         String s = actionToString(action);
         System.out.println("action is " + s);
