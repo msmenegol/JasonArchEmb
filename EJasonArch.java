@@ -85,11 +85,10 @@ public class EJasonArch extends AgArch {
 
     public void addState(String state){
       String[] strTerms = state.split("[(),]");//get functor, aka thing before "("
-
       Literal literalState = ASSyntax.createLiteral(strTerms[0]);
-
       //Build literalState to be added
       if(!strTerms[0].isEmpty()){//if there is a functor
+
         if(strTerms.length>1){
           for(int i=1; i < strTerms.length; i++){
             if(strTerms[i].matches(".*\\d+.*")){//if there are numbers in the term
@@ -123,6 +122,21 @@ public class EJasonArch extends AgArch {
       String s = action.getActionTerm().getFunctor() + "(";
       List<Term> terms = action.getActionTerm().getTerms();
       for(Term term : terms){
+        if(term.isString()){
+          s = s + ((StringTerm) term).getString() + ",";
+        } else if(term.isNumeric()){
+          try{
+            s = s + Double.toString(((NumberTerm) term).solve()) + ",";
+          } catch(Exception e) {e.printStackTrace();}
+        }
+      }
+      s = s.substring(0, s.length()-1) + ")"; //take last ',' out and close with ')'
+      return s;
+    }
+
+    private String perceptToString(Literal percept){
+      String s = percept.getFunctor() + "(";
+      List<Term> terms = percept.getTerms();
         if(term.isString()){
           s = s + ((StringTerm) term).getString() + ",";
         } else if(term.isNumeric()){
