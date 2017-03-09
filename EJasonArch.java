@@ -207,7 +207,15 @@ public class EJasonArch extends AgArch {
       return message;
     }
 
+    private String encodeAction(String message){
+      return message;
+    }
+
     public String decodePercept(String message){
+      return message;
+    }
+
+    private String encodePercept(String message){
       return message;
     }
 
