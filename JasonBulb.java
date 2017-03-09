@@ -87,7 +87,7 @@ public class JasonBulb implements Runnable{
             if(cortex.isAction(message)){//if it's an action
               //System.out.println("sendEm");
               cortex.confirmAction(cortex.decodeAction(message));//confirm execution
-            } else if(cotex.isPercept(message)){//then it's a percept
+            } else if(cortex.isPercept(message)){//then it's a percept
               cortex.addState(cortex.decodePercept(message));
             }
           }
