@@ -84,7 +84,7 @@ public class JasonBulb implements Runnable{
           System.out.println("message is " + message);
 
           if(!message.equals("")){//if it's a alid message
-            if(isAction(message)){//if it's an action
+            if(cortex.isAction(message)){//if it's an action
               //System.out.println("sendEm");
               cortex.confirmAction(decodeAction(message));//confirm execution
             } else {//then it's a percept
