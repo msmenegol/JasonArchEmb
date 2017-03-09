@@ -83,10 +83,10 @@ public class EJasonArch extends AgArch {
 
     }
 
-    public void addState(String state){
-      String[] strTerms = state.split("[(),]");//get functor, aka thing before "("
-      Literal literalState = ASSyntax.createLiteral(strTerms[0]);
-      //Build literalState to be added
+    public void addPercept(String percept){
+      String[] strTerms = percept.split("[(),]");//get functor, aka thing before "("
+      Literal literalPercept = ASSyntax.createLiteral(strTerms[0]);
+      //Build literalPercept to be added
       if(!strTerms[0].isEmpty()){//if there is a functor
         if(strTerms.length>1){
           for(int i=1; i < strTerms.length; i++){
@@ -96,14 +96,14 @@ public class EJasonArch extends AgArch {
                 number = Double.parseDouble(strTerms[i]);
               }catch(Exception e){e.printStackTrace();}
 
-              literalState.addTerm(ASSyntax.createNumber(number));
+              literalPercept.addTerm(ASSyntax.createNumber(number));
             }else{ //otherwise, it's a string
-              literalState.addTerm(ASSyntax.createString(strTerms[i]));
+              literalPercept.addTerm(ASSyntax.createString(strTerms[i]));
             }
           }
         }
         worldState.removeAll(findFunctor(worldState, strTerms[0]));//remove all emergencies with same functor
-        worldState.add(literalState);
+        worldState.add(literalPercept);
       }
     }
 
@@ -116,6 +116,8 @@ public class EJasonArch extends AgArch {
       }
       return matches;
     }
+
+
 
     public String perceptToString(Literal percept){
       String s = percept.getFunctor() + "(";
