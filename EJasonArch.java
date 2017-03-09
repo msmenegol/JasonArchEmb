@@ -97,7 +97,7 @@ public class EJasonArch extends AgArch {
         String s = actionToString(action);
         System.out.println("action is " + s);
 
-        done = bulb.bulbSend(s);
+        done = bulb.bulbSend(encodeAction(actionToString(action)));
 
         if(done){
           //action was sent
@@ -188,11 +188,13 @@ public class EJasonArch extends AgArch {
     }
 
     public void confirmAction(String actionStr){
+      System.out.println("Confirmation was called with " + actionStr);
       Iterator it = waitingConfirmList.entrySet().iterator();
       while(it.hasNext()){
         Map.Entry pair = (Map.Entry)it.next();
         if(pair.getValue().equals(actionStr)){
           //set that the execution was ok
+          System.out.println("Confirming " + pair.getValue());
           ((ActionExec)pair.getKey()).setResult(true);
           actionExecuted((ActionExec)pair.getKey());
           it.remove();
@@ -209,6 +211,7 @@ public class EJasonArch extends AgArch {
     }
 
     private String encodeAction(String message){
+      System.out.println("Encoded " + message + "   " + this.actionID);
       return this.actionID+message;
     }
 
