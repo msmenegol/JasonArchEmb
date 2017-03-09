@@ -88,7 +88,6 @@ public class EJasonArch extends AgArch {
       Literal literalState = ASSyntax.createLiteral(strTerms[0]);
       //Build literalState to be added
       if(!strTerms[0].isEmpty()){//if there is a functor
-
         if(strTerms.length>1){
           for(int i=1; i < strTerms.length; i++){
             if(strTerms[i].matches(".*\\d+.*")){//if there are numbers in the term
@@ -118,7 +117,7 @@ public class EJasonArch extends AgArch {
       return matches;
     }
 
-    private String actionToString(ActionExec action){
+    public String actionToString(ActionExec action){
       String s = action.getActionTerm().getFunctor() + "(";
       List<Term> terms = action.getActionTerm().getTerms();
       for(Term term : terms){
@@ -134,7 +133,7 @@ public class EJasonArch extends AgArch {
       return s;
     }
 
-    private String perceptToString(Literal percept){
+    public String perceptToString(Literal percept){
       String s = percept.getFunctor() + "(";
       List<Term> terms = percept.getTerms();
         if(term.isString()){
