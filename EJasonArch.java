@@ -56,7 +56,7 @@ public class EJasonArch extends AgArch {
       List<Literal> p = new ArrayList<Literal>();//super.perceive();
       p.add(waypoint);
 
-      p.addAll(emergencyList);
+      p.addAll(worldState);
       //p.addAll();
       return p;
   }
@@ -134,11 +134,11 @@ public class EJasonArch extends AgArch {
 
     public void addState(String state){
       String[] strTerms = state.split("[(),]");//get functor, aka thing before "("
-      //System.out.println("EM IS: " + strTerms[0]);
+
       if(!strTerms[0].isEmpty()){//if there is a functor
-        emergencyList.removeAll(findFunctor(emergencyList, strTerms[0]));//remove all emergencies with same functor
+        worldState.removeAll(findFunctor(worldState, strTerms[0]));//remove all emergencies with same functor
       }
-      Literal literalEm = ASSyntax.createLiteral(strTerms[0]);
+      Literal literalState = ASSyntax.createLiteral(strTerms[0]);
       if(strTerms.length>1){
         for(int i=1; i < strTerms.length; i++){
           if(strTerms[i].matches(".*\\d+.*")){//if there are numbers in the term
@@ -147,13 +147,13 @@ public class EJasonArch extends AgArch {
               number = Double.parseDouble(strTerms[i]);
             }catch(Exception e){e.printStackTrace();}
 
-            literalEm.addTerm(ASSyntax.createNumber(number));
+            literalState.addTerm(ASSyntax.createNumber(number));
           }else{ //otherwise, it's a string
-            literalEm.addTerm(ASSyntax.createString(strTerms[i]));
+            literalState.addTerm(ASSyntax.createString(strTerms[i]));
           }
         }
       }
-      emergencyList.add(literalEm);
+      worldState.add(literalState);
     }
 
     private List<Literal> findFunctor(List<Literal> list, String functor){
