@@ -98,7 +98,7 @@ public class EJasonArch extends AgArch {
         System.out.println("action is " + s);
 
         done = bulb.bulbSend(encodeAction(actionToString(action)));
-
+/*
         if(done){
           //action was sent
           //wait for arrival of confirmation
@@ -107,7 +107,7 @@ public class EJasonArch extends AgArch {
           //action was not sent. Do something about it
           System.out.println("NotDone");
         }
-        
+*/        
     }
 
     public void addState(String state){
