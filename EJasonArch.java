@@ -217,7 +217,7 @@ public class EJasonArch extends AgArch {
     }
 
     public String decodePercept(String message){
-      return return message.substring(perceptID.lenght(),message.lenght());
+      return message.substring(perceptID.lenght(),message.lenght());
     }
 
     private String encodePercept(String message){
