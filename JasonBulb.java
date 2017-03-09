@@ -122,4 +122,8 @@ public class JasonBulb implements Runnable{
     return message;
   }
 
+  private String decodePercept(String message){
+    return message;
+  }
+
 }
