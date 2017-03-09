@@ -71,7 +71,7 @@ public class EJasonArch extends AgArch {
         boolean done = false;
         boolean confirmed = false;
 
-        List<Term> terms = action.getActionTerm().getTerms();
+        //List<Term> terms = action.getActionTerm().getTerms();
 
         /*
         //getting args from move(x,y,z)
