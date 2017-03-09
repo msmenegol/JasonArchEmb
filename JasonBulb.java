@@ -97,7 +97,19 @@ public class JasonBulb implements Runnable{
               //System.out.println("sendEm");
               cortex.confirmAction(cortex.decodeAction(message));//confirm execution
             } else if(cortex.isPercept(message)){//then it's a percept
-              cortex.addPercept(cortex.decodePercept(message));
+
+              String[] parts = message.split("[()]");//separate into functor and the rest
+              List<String> terms = cortex.getPercepts(parts[0]);//get all percepts such as this one
+              
+              if(terms.isEmpty()) cortex.addPercept(cortex.decodePercept(message)); //if there are no others like this one
+              else if(parts.length<2){ //there are no arguments to this percept
+                if(PerceptFilter.filter(parts[0])) cortex.addPercept(cortex.decodePercept(message));
+              } else {//if there are functor and arguments
+                for(String term : terms){
+                  term = term.split("[()]")[1]; //substitute each one by just the rest
+                }
+                if(PerceptFilter.filter[parts[0], parts[1], terms]) cortex.addPercept(cortex.decodePercept(message));
+              }
             }
           }
         }
