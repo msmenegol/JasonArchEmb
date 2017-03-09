@@ -15,17 +15,23 @@ import java.util.*;
  * The class must extend AgArch class to be used by the Jason engine.
  */
 public class EJasonArch extends AgArch {
+  //******************Editable variables*********************
+  private static final String actionID = "!";
+  private static final String perceptID = "";
+  //*********************************************************
+
 
   //JasonBulb makes the interface between the Agent and the rest of the system
   private JasonBulb bulb = new JasonBulb(this);
   Thread bulbThread = new Thread(bulb);
 
-  private List<Literal> emergencyList = new ArrayList<Literal>();
+  private List<Literal> worldState = new ArrayList<Literal>();
 
   private Map<ActionExec,String> waitingConfirmList = new HashMap<ActionExec,String>();
 
   //Application specific attributes
 //  private P3d position = new P3d(); //position right now
+/*
   private Literal position = ASSyntax.createLiteral("position",
                                 ASSyntax.createNumber(0),
                                 ASSyntax.createNumber(0),
@@ -35,7 +41,7 @@ public class EJasonArch extends AgArch {
                                 ASSyntax.createNumber(0),
                                 ASSyntax.createNumber(0),
                                 ASSyntax.createNumber(0));
-
+*/
   @Override
   public void init(){
     //initialize the bulb
@@ -54,12 +60,10 @@ public class EJasonArch extends AgArch {
   @Override
   public List<Literal> perceive() {
       List<Literal> p = new ArrayList<Literal>();//super.perceive();
-      p.add(waypoint);
+      //p.add(waypoint);
 
-      p.addAll(emergencyList);
+      p.addAll(worldState);
       //p.addAll();
-      //String position = bulb.SendReceive("position");
-      //l.add(Literal.parseLiteral(position)); //message should be pos(x,y,z)
       return p;
   }
 
@@ -71,7 +75,7 @@ public class EJasonArch extends AgArch {
         boolean done = false;
         boolean confirmed = false;
 
-        List<Term> terms = action.getActionTerm().getTerms();
+        //List<Term> terms = action.getActionTerm().getTerms();
 
         /*
         //getting args from move(x,y,z)
@@ -94,7 +98,7 @@ public class EJasonArch extends AgArch {
         String s = actionToString(action);
         System.out.println("action is " + s);
 
-        done = bulb.bulbSend(s);
+        done = bulb.bulbSend(encodeAction(actionToString(action)));
 
         if(done){
           //action was sent
@@ -134,28 +138,30 @@ public class EJasonArch extends AgArch {
         */
     }
 
-    public void addEmergency(String emergencyID){
-      String[] strTerms = emergencyID.split("[(),]");//get functor, aka thing before "("
-      //System.out.println("EM IS: " + strTerms[0]);
-      if(!strTerms[0].isEmpty()){//if there is a functor
-        emergencyList.removeAll(findFunctor(emergencyList, strTerms[0]));//remove all emergencies with same functor
-      }
-      Literal literalEm = ASSyntax.createLiteral(strTerms[0]);
-      if(strTerms.length>1){
-        for(int i=1; i < strTerms.length; i++){
-          if(strTerms[i].matches(".*\\d+.*")){//if there are numbers in the term
-            double number = Double.NaN;
-            try{
-              number = Double.parseDouble(strTerms[i]);
-            }catch(Exception e){e.printStackTrace();}
+    public void addState(String state){
+      String[] strTerms = state.split("[(),]");//get functor, aka thing before "("
 
-            literalEm.addTerm(ASSyntax.createNumber(number));
-          }else{ //otherwise, it's a string
-            literalEm.addTerm(ASSyntax.createString(strTerms[i]));
+      Literal literalState = ASSyntax.createLiteral(strTerms[0]);
+
+      //Build literalState to be added
+      if(!strTerms[0].isEmpty()){//if there is a functor
+        if(strTerms.length>1){
+          for(int i=1; i < strTerms.length; i++){
+            if(strTerms[i].matches(".*\\d+.*")){//if there are numbers in the term
+              double number = Double.NaN;
+              try{
+                number = Double.parseDouble(strTerms[i]);
+              }catch(Exception e){e.printStackTrace();}
+
+              literalState.addTerm(ASSyntax.createNumber(number));
+            }else{ //otherwise, it's a string
+              literalState.addTerm(ASSyntax.createString(strTerms[i]));
+            }
           }
         }
+        worldState.removeAll(findFunctor(worldState, strTerms[0]));//remove all emergencies with same functor
+        worldState.add(literalState);
       }
-      emergencyList.add(literalEm);
     }
 
     private List<Literal> findFunctor(List<Literal> list, String functor){
@@ -185,11 +191,13 @@ public class EJasonArch extends AgArch {
     }
 
     public void confirmAction(String actionStr){
+      System.out.println("Confirmation was called with " + actionStr);
       Iterator it = waitingConfirmList.entrySet().iterator();
       while(it.hasNext()){
         Map.Entry pair = (Map.Entry)it.next();
         if(pair.getValue().equals(actionStr)){
           //set that the execution was ok
+          System.out.println("Confirming " + pair.getValue());
           ((ActionExec)pair.getKey()).setResult(true);
           actionExecuted((ActionExec)pair.getKey());
           it.remove();
@@ -198,7 +206,28 @@ public class EJasonArch extends AgArch {
     }
 
     public boolean isAction(String actionStr){
-      return true;
+      return actionStr.substring(0,this.actionID.length()).equals(this.actionID);
+    }
+
+    public String decodeAction(String message){
+      return message.substring(this.actionID.length(),message.length());
+    }
+
+    private String encodeAction(String message){
+      System.out.println("Encoded " + message + "   " + this.actionID);
+      return this.actionID+message;
+    }
+
+    public boolean isPercept(String perceptStr){
+      return perceptStr.substring(0,this.perceptID.length()).equals(this.perceptID);
+    }
+
+    public String decodePercept(String message){
+      return message.substring(this.perceptID.length(),message.length());
+    }
+
+    private String encodePercept(String message){
+      return this.perceptID+message;
     }
 
 
