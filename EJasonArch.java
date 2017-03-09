@@ -61,7 +61,6 @@ public class EJasonArch extends AgArch {
   public List<Literal> perceive() {
       List<Literal> p = new ArrayList<Literal>();//super.perceive();
       //p.add(waypoint);
-
       p.addAll(worldState);
       //p.addAll();
       return p;
@@ -108,34 +107,7 @@ public class EJasonArch extends AgArch {
           //action was not sent. Do something about it
           System.out.println("NotDone");
         }
-        //subsistute the following by some kind of parsing
-        //if(s == null) System.out.println("s is null");
-        //System.out.println(s);
-        /*
-        confirmed = bulb.isInMailbox(s);//wait for the confirmation
-
-        if(!confirmed){
-          //action did not go through
-          //do something about it
-          System.out.println("NotConfirmed");
-        }
-        */
-        /*
-        waypoint = ASSyntax.createLiteral("waypoint",
-                                      ASSyntax.createNumber(x),
-                                      ASSyntax.createNumber(y),
-                                      ASSyntax.createNumber(z));
-
-        //this.waypoint.set(x,y,z);
-        double coordX=0;
-        try{
-          coordX = ((NumberTerm) waypoint.getTerm(0)).solve();
-        } catch(Exception e){e.printStackTrace();}
-        System.out.println(coordX);
-        // set that the execution was ok
-        //action.setResult(true);
-        //actionExecuted(action);
-        */
+        
     }
 
     public void addState(String state){
