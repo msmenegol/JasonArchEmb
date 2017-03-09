@@ -44,6 +44,9 @@ public class EJasonArch extends AgArch {
     bulbThread.setDaemon(true);
     bulbThread.start();
     //while(!bulb.isReady());//wait for it to initialize properly
+    try{
+      Thread.sleep(200);//wait a bit for bulb to start up
+    }catch(Exception e){e.printStackTrace();}
 
   }
     // this method just add some perception for the agent
@@ -54,7 +57,7 @@ public class EJasonArch extends AgArch {
       p.add(waypoint);
 
       p.addAll(emergencyList);
-      p.addAll()
+      //p.addAll();
       //String position = bulb.SendReceive("position");
       //l.add(Literal.parseLiteral(position)); //message should be pos(x,y,z)
       return p;
