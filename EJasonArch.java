@@ -201,11 +201,11 @@ public class EJasonArch extends AgArch {
     }
 
     public boolean isAction(String actionStr){
-      return actionStr.substring(0,this.actionID.lenght()).equals(this.actionID);
+      return actionStr.substring(0,this.actionID.length()).equals(this.actionID);
     }
 
     public String decodeAction(String message){
-      return message.substring(this.actionID.lenght(),message.lenght());
+      return message.substring(this.actionID.length(),message.length());
     }
 
     private String encodeAction(String message){
@@ -213,11 +213,11 @@ public class EJasonArch extends AgArch {
     }
 
     public boolean isPercept(String perceptStr){
-      return perceptStr.substring(0,this.perceptID.lenght()).equals(this.perceptID);
+      return perceptStr.substring(0,this.perceptID.length()).equals(this.perceptID);
     }
 
     public String decodePercept(String message){
-      return message.substring(this.perceptID.lenght(),message.lenght());
+      return message.substring(this.perceptID.length(),message.length());
     }
 
     private String encodePercept(String message){
