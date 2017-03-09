@@ -97,9 +97,7 @@ public class JasonBulb implements Runnable{
               //System.out.println("sendEm");
               cortex.confirmAction(cortex.decodeAction(message));//confirm execution
             } else if(cortex.isPercept(message)){//then it's a percept
-              if(PerceptFilter.filter(cortex.decodePercept(message))){
-                cortex.addState(cortex.decodePercept(message));
-              }
+              cortex.addState(cortex.decodePercept(message));
             }
           }
         }
