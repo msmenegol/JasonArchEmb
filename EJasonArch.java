@@ -133,7 +133,7 @@ public class EJasonArch extends AgArch {
     }
 
     public void addState(String state){
-      String[] strTerms = emergencyID.split("[(),]");//get functor, aka thing before "("
+      String[] strTerms = state.split("[(),]");//get functor, aka thing before "("
       //System.out.println("EM IS: " + strTerms[0]);
       if(!strTerms[0].isEmpty()){//if there is a functor
         emergencyList.removeAll(findFunctor(emergencyList, strTerms[0]));//remove all emergencies with same functor
