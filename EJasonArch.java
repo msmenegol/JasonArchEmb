@@ -31,6 +31,7 @@ public class EJasonArch extends AgArch {
 
   //Application specific attributes
 //  private P3d position = new P3d(); //position right now
+/*
   private Literal position = ASSyntax.createLiteral("position",
                                 ASSyntax.createNumber(0),
                                 ASSyntax.createNumber(0),
@@ -40,7 +41,7 @@ public class EJasonArch extends AgArch {
                                 ASSyntax.createNumber(0),
                                 ASSyntax.createNumber(0),
                                 ASSyntax.createNumber(0));
-
+*/
   @Override
   public void init(){
     //initialize the bulb
@@ -59,7 +60,7 @@ public class EJasonArch extends AgArch {
   @Override
   public List<Literal> perceive() {
       List<Literal> p = new ArrayList<Literal>();//super.perceive();
-      p.add(waypoint);
+      //p.add(waypoint);
 
       p.addAll(worldState);
       //p.addAll();
