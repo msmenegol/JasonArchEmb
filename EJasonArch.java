@@ -117,7 +117,9 @@ public class EJasonArch extends AgArch {
       return matches;
     }
 
-
+    public String[] getPercepts(String functor){
+      return "";
+    }
 
     public String perceptToString(Literal percept){
       String s = percept.getFunctor() + "(";
