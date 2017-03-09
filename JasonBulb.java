@@ -83,13 +83,13 @@ public class JasonBulb implements Runnable{
 
           System.out.println("message is " + message);
 
-          if(isAction(message)){//if it's an emergency
-            System.out.println("sendEm");
-            cortex.addEmergency(parseEmergency(message));
-          } else if(cortex.isAction(message)){//if it refers to an action
-            cortex.confirmAction(decodeAction(message));//confirm it's execution
-          } else {
-            this.mailbox.add(message);//add percepts to mailbox
+          if(!message.equals("")){//if it's a alid message
+            if(isAction(message)){//if it's an action
+              //System.out.println("sendEm");
+              cortex.confirmAction(decodeAction(message));//confirm execution
+            } else {//then it's a percept
+              cortex.addState(decodePercept(message));
+            }
           }
         }
       } catch(Exception e) {
@@ -97,7 +97,7 @@ public class JasonBulb implements Runnable{
       }
     }
   }
-
+/*
   private boolean isEmergency(String s){
     System.out.println("checking on" + s);
     if(!s.isEmpty()){if(s.substring(0, 1).equals("!")){return true;}}//emergency messages begin with !
@@ -111,7 +111,7 @@ public class JasonBulb implements Runnable{
   public boolean isInMailbox(String message){
     return this.mailbox.remove(message);
   }
-
+*/
     // get the socket instance
   private Socket getSocket() {
        return socket;
