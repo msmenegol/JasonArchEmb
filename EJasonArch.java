@@ -199,6 +199,14 @@ public class EJasonArch extends AgArch {
       return true;
     }
 
+    public String decodeAction(String message){
+      return message;
+    }
+
+    public String decodePercept(String message){
+      return message;
+    }
+
 
 
     //@Override

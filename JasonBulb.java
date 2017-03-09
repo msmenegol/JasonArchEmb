@@ -86,9 +86,9 @@ public class JasonBulb implements Runnable{
           if(!message.equals("")){//if it's a alid message
             if(cortex.isAction(message)){//if it's an action
               //System.out.println("sendEm");
-              cortex.confirmAction(decodeAction(message));//confirm execution
+              cortex.confirmAction(cortex.decodeAction(message));//confirm execution
             } else {//then it's a percept
-              cortex.addState(decodePercept(message));
+              cortex.addState(cortex.decodePercept(message));
             }
           }
         }
@@ -117,13 +117,5 @@ public class JasonBulb implements Runnable{
        return socket;
   }
 
-
-  private String decodeAction(String message){
-    return message;
-  }
-
-  private String decodePercept(String message){
-    return message;
-  }
 
 }
