@@ -12,8 +12,11 @@ public class JasonBulb implements Runnable{
   private EJasonArch cortex;
   //ready
   private boolean ready = false;
-  // socket object
+  //socket object
   private Socket socket;
+  //connection info
+  String ip = "localhost";
+  int port = 6969;
   //in buffer
   private BufferedReader in;
   //out buffer
@@ -27,14 +30,20 @@ public class JasonBulb implements Runnable{
   }
 
   public void run() {
-    // socket tcp connection
-    String ip = "localhost";
-    int port = 6969;
     try{
-        this.socketConnect(ip, port);
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
+      String[] line;
+      BufferedReader conInfo = new BufferedReader(new FileReader("connectionInfo"));
+      if((line = (conInfo.readLine()).split(":"))[0].equals("port")){this.ip = line[1];}
+      if((line = (conInfo.readLine()).split(":"))[0].equals("port")){this.port = Integer.parseInt(line[1]);}
+    } catch(Exception e){}
+    // socket tcp connection
+    //String ip = "localhost";
+    //int port = 6969;
+    try{
+      this.socketConnect(this.ip, this.port);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
     System.out.println("[Connection established]");
     try{
