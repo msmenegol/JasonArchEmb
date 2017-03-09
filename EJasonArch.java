@@ -15,6 +15,10 @@ import java.util.*;
  * The class must extend AgArch class to be used by the Jason engine.
  */
 public class EJasonArch extends AgArch {
+  //******************Editable variables*********************
+  private static final String actionID = "!";
+  //*********************************************************
+
 
   //JasonBulb makes the interface between the Agent and the rest of the system
   private JasonBulb bulb = new JasonBulb(this);
