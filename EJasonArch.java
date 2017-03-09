@@ -140,25 +140,27 @@ public class EJasonArch extends AgArch {
     public void addState(String state){
       String[] strTerms = state.split("[(),]");//get functor, aka thing before "("
 
-      if(!strTerms[0].isEmpty()){//if there is a functor
-        worldState.removeAll(findFunctor(worldState, strTerms[0]));//remove all emergencies with same functor
-      }
       Literal literalState = ASSyntax.createLiteral(strTerms[0]);
-      if(strTerms.length>1){
-        for(int i=1; i < strTerms.length; i++){
-          if(strTerms[i].matches(".*\\d+.*")){//if there are numbers in the term
-            double number = Double.NaN;
-            try{
-              number = Double.parseDouble(strTerms[i]);
-            }catch(Exception e){e.printStackTrace();}
 
-            literalState.addTerm(ASSyntax.createNumber(number));
-          }else{ //otherwise, it's a string
-            literalState.addTerm(ASSyntax.createString(strTerms[i]));
+      //Build literalState to be added
+      if(!strTerms[0].isEmpty()){//if there is a functor
+        if(strTerms.length>1){
+          for(int i=1; i < strTerms.length; i++){
+            if(strTerms[i].matches(".*\\d+.*")){//if there are numbers in the term
+              double number = Double.NaN;
+              try{
+                number = Double.parseDouble(strTerms[i]);
+              }catch(Exception e){e.printStackTrace();}
+
+              literalState.addTerm(ASSyntax.createNumber(number));
+            }else{ //otherwise, it's a string
+              literalState.addTerm(ASSyntax.createString(strTerms[i]));
+            }
           }
         }
+        worldState.removeAll(findFunctor(worldState, strTerms[0]));//remove all emergencies with same functor
+        worldState.add(literalState);
       }
-      worldState.add(literalState);
     }
 
     private List<Literal> findFunctor(List<Literal> list, String functor){
