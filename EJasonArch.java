@@ -209,7 +209,7 @@ public class EJasonArch extends AgArch {
     }
 
     private String encodeAction(String message){
-      return actionID+message;
+      return this.actionID+message;
     }
 
     public boolean isPercept(String perceptStr){
@@ -221,7 +221,7 @@ public class EJasonArch extends AgArch {
     }
 
     private String encodePercept(String message){
-      return perceptID+message;
+      return this.perceptID+message;
     }
 
 
