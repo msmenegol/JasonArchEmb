@@ -70,44 +70,16 @@ public class EJasonArch extends AgArch {
     @Override
     public void act(ActionExec action) {
         //general variables for action handling
-        int tries = 0;
-        boolean done = false;
-        boolean confirmed = false;
-
-        //List<Term> terms = action.getActionTerm().getTerms();
-
-        /*
-        //getting args from move(x,y,z)
-        double x = Double.NaN;
-        double y = Double.NaN;
-        double z = Double.NaN;
-        try{
-          x = ((NumberTerm) action.getActionTerm().getTerm(0)).solve();
-          y = ((NumberTerm) action.getActionTerm().getTerm(1)).solve();
-          z = ((NumberTerm) action.getActionTerm().getTerm(2)).solve();}
-        catch(Exception e){
-          e.printStackTrace();
-        }
 
         getTS().getLogger().info("Agent " + getAgName() + " is doing: " + action.getActionTerm().getFunctor() + " to " + x + ", " + y + ", " + z);
         */
-        //keep trying until it's ready
-        //String s = action.getActionTerm().getFunctor() + "("+ x + "," + y + "," + z + ")";
-        //System.out.println(action.toString());
+
         String s = actionToString(action);
         System.out.println("action is " + s);
 
-        done = bulb.bulbSend(encodeAction(actionToString(action)));
-/*
-        if(done){
-          //action was sent
-          //wait for arrival of confirmation
-          waitingConfirmList.put(action,actionToString(action));
-        } else {
-          //action was not sent. Do something about it
-          System.out.println("NotDone");
-        }
-*/        
+        bulb.bulbSend(encodeAction(actionToString(action)));
+
+
     }
 
     public void addState(String state){
