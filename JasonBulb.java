@@ -78,9 +78,12 @@ public class JasonBulb implements Runnable{
         if(this.socket.getInetAddress().isReachable(timeout)){
           //BufferedReader in = new BufferedReader(new InputStreamReader(getSocket().getInputStream()));
           System.out.println("reading");
+
           String message = this.in.readLine();
+
           System.out.println("message is " + message);
-          if(isEmergency(message)){//if it's an emergency
+
+          if(isAction(message)){//if it's an emergency
             System.out.println("sendEm");
             cortex.addEmergency(parseEmergency(message));
           } else if(cortex.isAction(message)){//if it refers to an action
