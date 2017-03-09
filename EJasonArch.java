@@ -201,7 +201,7 @@ public class EJasonArch extends AgArch {
     }
 
     public boolean isAction(String actionStr){
-      return actionStr.substring(0,actionID.lenght()).equals(this.actionID);
+      return actionStr.substring(0,this.actionID.lenght()).equals(this.actionID);
     }
 
     public String decodeAction(String message){
@@ -213,7 +213,7 @@ public class EJasonArch extends AgArch {
     }
 
     public boolean isPercept(String perceptStr){
-      return actionStr.substring(0,actionID.lenght()).equals(this.perceptID);
+      return actionStr.substring(0,this.perceptID.lenght()).equals(this.perceptID);
     }
 
     public String decodePercept(String message){
