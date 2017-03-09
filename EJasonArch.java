@@ -201,7 +201,9 @@ public class EJasonArch extends AgArch {
     }
 
     public boolean isAction(String actionStr){
-      return true;
+      if(actionStr.substring(0,actionID.lenght()).equals(actionID)){
+        return true;
+      } else return false;
     }
 
     public String decodeAction(String message){
