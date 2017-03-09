@@ -212,6 +212,10 @@ public class EJasonArch extends AgArch {
       return actionID+message;
     }
 
+    public boolean isPercept(String perceptStr){
+      return true;
+    }
+
     public String decodePercept(String message){
       return message;
     }
