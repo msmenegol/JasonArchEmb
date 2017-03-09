@@ -61,7 +61,7 @@ public class EJasonArch extends AgArch {
   public List<Literal> perceive() {
       List<Literal> p = new ArrayList<Literal>();//super.perceive();
       //p.add(waypoint);
-      p.addAll(worldState);
+      p.addAll(this.worldState);
       //p.addAll();
       return p;
   }
@@ -102,8 +102,8 @@ public class EJasonArch extends AgArch {
             }
           }
         }
-        worldState.removeAll(findFunctor(worldState, strTerms[0]));//remove all emergencies with same functor
-        worldState.add(literalPercept);
+        this.worldState.removeAll(findFunctor(worldState, strTerms[0]));//remove all emergencies with same functor
+        this.worldState.add(literalPercept);
       }
     }
 
@@ -117,8 +117,13 @@ public class EJasonArch extends AgArch {
       return matches;
     }
 
-    public String[] getPercepts(String functor){
-      return "";
+    public List<String> getPercepts(String functor){
+      List<Literal> litPercepts = findFunctor(this.worldState, functor);
+      List<String> strPercepts;
+      for(Literal object : litPercepts){
+        strPercepts.add((Literal) object.toString()));
+      }
+      return strPercepts;
     }
 
     public String perceptToString(Literal percept){
