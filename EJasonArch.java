@@ -205,7 +205,7 @@ public class EJasonArch extends AgArch {
     }
 
     public String decodeAction(String message){
-      return message.substring(actionID.lenght(),message.lenght());
+      return message.substring(this.actionID.lenght(),message.lenght());
     }
 
     private String encodeAction(String message){
@@ -217,7 +217,7 @@ public class EJasonArch extends AgArch {
     }
 
     public String decodePercept(String message){
-      return message.substring(perceptID.lenght(),message.lenght());
+      return message.substring(this.perceptID.lenght(),message.lenght());
     }
 
     private String encodePercept(String message){
