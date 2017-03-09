@@ -20,7 +20,7 @@ public class EJasonArch extends AgArch {
   private JasonBulb bulb = new JasonBulb(this);
   Thread bulbThread = new Thread(bulb);
 
-  private List<Literal> emergencyList = new ArrayList<Literal>();
+  private List<Literal> worldState = new ArrayList<Literal>();
 
   private Map<ActionExec,String> waitingConfirmList = new HashMap<ActionExec,String>();
 
@@ -58,8 +58,6 @@ public class EJasonArch extends AgArch {
 
       p.addAll(emergencyList);
       //p.addAll();
-      //String position = bulb.SendReceive("position");
-      //l.add(Literal.parseLiteral(position)); //message should be pos(x,y,z)
       return p;
   }
 
