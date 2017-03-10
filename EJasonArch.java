@@ -63,7 +63,9 @@ public class EJasonArch extends AgArch {
           //action was sent. Wait for arrival of confirmation
           waitingConfirmList.put(action,actionToString(action));
         } else {
-          //DO SOMETHING IF ACTION NEVER GETS CONFIRMED
+          //Abort action
+          action.setResult(false);
+          actionExecuted(action);
         }
 
 
