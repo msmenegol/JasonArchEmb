@@ -92,6 +92,10 @@ public class JasonBulb implements Runnable{
           if(!message.equals("")){//if it's a valid message
             if(cortex.isAction(message)){//if it's an action
               cortex.confirmAction(cortex.decodeAction(message));//confirm execution
+
+            } else if(cortex.isFail(message)){//if it's a fail
+              cortex.failAction(cortex.decodeFail(cortex.decodeAction(message)));
+
             } else if(cortex.isPercept(message)){//then it's a percept
               String decodedPercept = cortex.decodePercept(message);
               String[] parts = decodedPercept.split("[(),]");//separate into functor and the rest
