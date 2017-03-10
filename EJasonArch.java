@@ -103,7 +103,6 @@ public class EJasonArch extends AgArch {
           }
         }
         this.worldState.removeAll(findFunctor(worldState, strTerms[0]));//remove all emergencies with same functor
-        System.out.println("Literal is" + literalPercept.toString());
         this.worldState.add(literalPercept);
       }
     }
@@ -118,29 +117,15 @@ public class EJasonArch extends AgArch {
       return matches;
     }
 
-    public List<String> getPercepts(String functor){
+    public List<String[]> getPercepts(String functor){
       List<Literal> litPercepts = findFunctor(this.worldState, functor);
-      List<String> strPercepts = new ArrayList<String>();
+      List<String[]> strPercepts = new ArrayList<String[]>();
       for(Literal object : litPercepts){
-        strPercepts.add(((Literal) object).toString());
+        strPercepts.add(((Literal) object).toString().split("[(),]"));
       }
       return strPercepts;
     }
-/*
-    public String perceptToString(Literal percept){
-      String s = percept.getFunctor() + "(";
-      List<Term> terms = percept.getTerms();
-        if(term.isString()){
-          s = s + ((StringTerm) term).getString() + ",";
-        } else if(term.isNumeric()){
-          try{
-            s = s + Double.toString(((NumberTerm) term).solve()) + ",";
-          } catch(Exception e) {e.printStackTrace();}
-        }
-      s = s.substring(0, s.length()-1) + ")"; //take last ',' out and close with ')'
-      return s;
-    }
-*/
+
     public String actionToString(ActionExec action){
       String s = action.getActionTerm().getFunctor() + "(";
       List<Term> terms = action.getActionTerm().getTerms();
