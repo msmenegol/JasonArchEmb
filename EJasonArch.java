@@ -29,27 +29,12 @@ public class EJasonArch extends AgArch {
 
   private Map<ActionExec,String> waitingConfirmList = new HashMap<ActionExec,String>();
 
-  //Application specific attributes
-//  private P3d position = new P3d(); //position right now
-/*
-  private Literal position = ASSyntax.createLiteral("position",
-                                ASSyntax.createNumber(0),
-                                ASSyntax.createNumber(0),
-                                ASSyntax.createNumber(0));
-
-  private Literal waypoint = ASSyntax.createLiteral("waypoint",
-                                ASSyntax.createNumber(0),
-                                ASSyntax.createNumber(0),
-                                ASSyntax.createNumber(0));
-*/
   @Override
   public void init(){
     //initialize the bulb
-    //try{bulb.init();}
-    //catch(Exception e){e.printStackTrace();}
     bulbThread.setDaemon(true);
     bulbThread.start();
-    //while(!bulb.isReady());//wait for it to initialize properly
+
     try{
       Thread.sleep(200);//wait a bit for bulb to start up
     }catch(Exception e){e.printStackTrace();}
@@ -69,10 +54,6 @@ public class EJasonArch extends AgArch {
     // this method get the agent actions
     @Override
     public void act(ActionExec action) {
-        //general variables for action handling
-
-        //getTS().getLogger().info("Agent " + getAgName() + " is doing: " + action.getActionTerm().getFunctor() + " to " + x + ", " + y + ", " + z);
-
 
         String s = actionToString(action);
         System.out.println("action is " + s);
