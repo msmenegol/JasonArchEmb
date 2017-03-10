@@ -57,9 +57,16 @@ public class EJasonArch extends AgArch {
 
         String s = actionToString(action);
 
-        bulb.bulbSend(encodeAction(actionToString(action)));
+        boolean done = bulb.bulbSend(encodeAction(actionToString(action)));
 
+        if(done){
+          //action was sent. Wait for arrival of confirmation
+          waitingConfirmList.put(action,actionToString(action));
+        } else {
           //DO SOMETHING IF ACTION NEVER GETS CONFIRMED
+        }
+
+
 
     }
 
