@@ -18,6 +18,7 @@ public class EJasonArch extends AgArch {
   //******************Editable variables*********************
   private static final String actionID = "!";
   private static final String perceptID = "";
+  private static final String failID = "@";
   //*********************************************************
 
 
@@ -28,28 +29,16 @@ public class EJasonArch extends AgArch {
   private List<Literal> worldState = new ArrayList<Literal>();
 
   private Map<ActionExec,String> waitingConfirmList = new HashMap<ActionExec,String>();
+  //public boolean waitListFree = false;
+  //private List<ActionExec> waitingConfirmListA = new ArrayList<ActionExec>();
+  //private List<String> waitingConfirmListB = new ArrayList<String>();
 
-  //Application specific attributes
-//  private P3d position = new P3d(); //position right now
-/*
-  private Literal position = ASSyntax.createLiteral("position",
-                                ASSyntax.createNumber(0),
-                                ASSyntax.createNumber(0),
-                                ASSyntax.createNumber(0));
-
-  private Literal waypoint = ASSyntax.createLiteral("waypoint",
-                                ASSyntax.createNumber(0),
-                                ASSyntax.createNumber(0),
-                                ASSyntax.createNumber(0));
-*/
   @Override
   public void init(){
     //initialize the bulb
-    //try{bulb.init();}
-    //catch(Exception e){e.printStackTrace();}
     bulbThread.setDaemon(true);
     bulbThread.start();
-    //while(!bulb.isReady());//wait for it to initialize properly
+
     try{
       Thread.sleep(200);//wait a bit for bulb to start up
     }catch(Exception e){e.printStackTrace();}
@@ -69,17 +58,21 @@ public class EJasonArch extends AgArch {
     // this method get the agent actions
     @Override
     public void act(ActionExec action) {
-        //general variables for action handling
-
-        //getTS().getLogger().info("Agent " + getAgName() + " is doing: " + action.getActionTerm().getFunctor() + " to " + x + ", " + y + ", " + z);
-
 
         String s = actionToString(action);
-        System.out.println("action is " + s);
 
-        bulb.bulbSend(encodeAction(actionToString(action)));
+        waitingConfirmList.put(action,actionToString(action));
 
-          //DO SOMETHING IF ACTION NEVER GETS CONFIRMED
+        boolean done = bulb.bulbSend(encodeAction(actionToString(action)));
+
+        if(!done){
+          //Abort action
+          //failAction(actionToString(action));
+          action.setResult(false);
+          actionExecuted(action);
+          System.out.println("action fail");
+        }
+
 
     }
 
@@ -127,35 +120,64 @@ public class EJasonArch extends AgArch {
     }
 
     public String actionToString(ActionExec action){
-      String s = action.getActionTerm().getFunctor() + "(";
+      String s = action.getActionTerm().getFunctor();
       List<Term> terms = action.getActionTerm().getTerms();
-      for(Term term : terms){
-        if(term.isString()){
-          s = s + ((StringTerm) term).getString() + ",";
-        } else if(term.isNumeric()){
-          try{
-            s = s + Double.toString(((NumberTerm) term).solve()) + ",";
-          } catch(Exception e) {e.printStackTrace();}
+      if (action.getActionTerm().hasTerm()){
+        s = s + "(";
+        for(Term term : terms){
+          if(term.isString()){
+            s = s + ((StringTerm) term).getString() + ",";
+          } else if(term.isNumeric()){
+            try{
+              s = s + Double.toString(((NumberTerm) term).solve()) + ",";
+            } catch(Exception e) {e.printStackTrace();}
+          }
         }
+        s = s.substring(0, s.length()-1) + ")"; //take last ',' out and close with ')'
       }
-      s = s.substring(0, s.length()-1) + ")"; //take last ',' out and close with ')'
       return s;
     }
 
-
     public void confirmAction(String actionStr){
-      System.out.println("Confirmation was called with " + actionStr);
+      System.out.println("confirming " + waitingConfirmList.size());
+      Iterator it = waitingConfirmList.entrySet().iterator();
+      while(it.hasNext()){
+        System.out.println("term in it");
+        Map.Entry pair = (Map.Entry)it.next();
+        if(pair.getValue().equals(actionStr)){
+          //set that the execution was ok
+          System.out.println("match found");
+          ((ActionExec)pair.getKey()).setResult(true);
+          actionExecuted((ActionExec)pair.getKey());
+          waitingConfirmList.remove(pair.getKey());
+          System.out.println("action confirmed");
+        }
+      }
+    }
+
+    public void failAction(String actionStr){
       Iterator it = waitingConfirmList.entrySet().iterator();
       while(it.hasNext()){
         Map.Entry pair = (Map.Entry)it.next();
         if(pair.getValue().equals(actionStr)){
           //set that the execution was ok
-          System.out.println("Confirming " + pair.getValue());
-          ((ActionExec)pair.getKey()).setResult(true);
+          ((ActionExec)pair.getKey()).setResult(false);
           actionExecuted((ActionExec)pair.getKey());
-          it.remove();
+          waitingConfirmList.remove(pair.getKey());
         }
       }
+    }
+
+    public boolean isFail(String failStr){
+      return failStr.substring(0,this.failID.length()).equals(this.failID);
+    }
+
+    public String decodeFail(String message){
+      return message.substring(this.failID.length(),message.length());
+    }
+
+    private String encodeFail(String message){
+      return this.failID+message;
     }
 
     public boolean isAction(String actionStr){
@@ -167,7 +189,6 @@ public class EJasonArch extends AgArch {
     }
 
     private String encodeAction(String message){
-      System.out.println("Encoded " + message + "   " + this.actionID);
       return this.actionID+message;
     }
 
