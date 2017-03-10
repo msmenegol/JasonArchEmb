@@ -107,18 +107,21 @@ public class EJasonArch extends AgArch {
     }
 
     public String actionToString(ActionExec action){
-      String s = action.getActionTerm().getFunctor() + "(";
+      String s = action.getActionTerm().getFunctor();
       List<Term> terms = action.getActionTerm().getTerms();
-      for(Term term : terms){
-        if(term.isString()){
-          s = s + ((StringTerm) term).getString() + ",";
-        } else if(term.isNumeric()){
-          try{
-            s = s + Double.toString(((NumberTerm) term).solve()) + ",";
-          } catch(Exception e) {e.printStackTrace();}
+      if (action.getActionTerm().hasTerm()){
+        s = s + "(";
+        for(Term term : terms){
+          if(term.isString()){
+            s = s + ((StringTerm) term).getString() + ",";
+          } else if(term.isNumeric()){
+            try{
+              s = s + Double.toString(((NumberTerm) term).solve()) + ",";
+            } catch(Exception e) {e.printStackTrace();}
+          }
         }
+        s = s.substring(0, s.length()-1) + ")"; //take last ',' out and close with ')'
       }
-      s = s.substring(0, s.length()-1) + ")"; //take last ',' out and close with ')'
       return s;
     }
 
