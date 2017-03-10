@@ -52,7 +52,7 @@ public class JasonBulb implements Runnable{
 
     while(true){
       bulbReceive();
-      cotex.wake();
+      cortex.wake();
     }
   }
     // make the connection with the socket
