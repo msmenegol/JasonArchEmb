@@ -98,17 +98,18 @@ public class JasonBulb implements Runnable{
               cortex.confirmAction(cortex.decodeAction(message));//confirm execution
             } else if(cortex.isPercept(message)){//then it's a percept
               String decodedPercept = cortex.decodePercept(message);
-              String[] parts = decodedPercept.split("[()]");//separate into functor and the rest
-              List<String> terms = cortex.getPercepts(parts[0]);//get all percepts such as this one
+              String[] parts = decodedPercept.split("[(),]");//separate into functor and the rest
+              List<String[]> oldPercepts = cortex.getPercepts(parts[0]);//get all percepts such as this one
 
-              if(terms.isEmpty()) cortex.addPercept(decodedPercept); //if there are no others like this one
+              if(oldPercepts.isEmpty()) cortex.addPercept(decodedPercept); //if there are no others like this one
               else if(parts.length<2){ //there are no arguments to this percept
                 if(PerceptFilter.filter(parts[0])) cortex.addPercept(decodedPercept);
               } else {//if there are functor and arguments
-                for(String term : terms){
-                  term = term.split("[()]")[1]; //substitute each one by just the rest
+
+                for(for i=1; i<oldPercepts.size(); i++){
+                  oldPercepts[i] = Arrays.copyOfRange(oldPercepts[i].split("[(),]"), 1, oldPercepts[i].length); //substitute each one by just the rest
                 }
-                if(PerceptFilter.filter(parts[0], parts[1], terms]) cortex.addPercept(decodedPercept);
+                if(PerceptFilter.filter(parts[0], Arrays.copyOfRange(parts,1,parts.length), oldPercepts)) cortex.addPercept(decodedPercept);
               }
             }
           }
