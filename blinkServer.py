@@ -1,12 +1,12 @@
 import socket
 import os
 import sys
-#import Adafruit_BBIO.GPIO as GPIO
+import Adafruit_BBIO.GPIO as GPIO
 
 #Command for turning led0 "On"
-#led0_on = 'echo 1 > /sys/class/leds/beaglebone::usr0/brightness'
+led0_on = 'echo 255 > /sys/class/leds/beaglebone:green:usr0/brightness'
 #Command for turning led0 "Off"
-#led0_off = 'echo 0 > /sys/class/leds/beaglebone::usr0/brightness'
+led0_off = 'echo 0 > /sys/class/leds/beaglebone:green:usr0/brightness'
 
 JAVAPORT = 6969
 
@@ -38,15 +38,16 @@ while True:
             data = connection.recv(1024)
             if data:
                 print >>sys.stderr, data
-                if data == '!ledOn':
-                    #os.system(led0_on)
-                    print >>sys.stderr, 'on'
-                if data == '!ledOff':
-                    #os.system(led0_off)
-                    print >>sys.stderr, 'off'
+                if decodeSock(data,JAVAPORT) == '!ledOn':
+                    os.system(led0_on)
+                    #print >>sys.stderr, 'on'
+                if decodeSock(data,JAVAPORT) == '!ledOff':
+                    os.system(led0_off)
+                    #print >>sys.stderr, 'off'
 
                 connection.sendall(encodeSock(data, JAVAPORT))
             else:
+                print >>sys.stderr, 'no action'
                 break
 
     finally:
