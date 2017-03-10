@@ -18,6 +18,7 @@ public class EJasonArch extends AgArch {
   //******************Editable variables*********************
   private static final String actionID = "!";
   private static final String perceptID = "";
+  private static final String failID = "@";
   //*********************************************************
 
 
@@ -149,6 +150,8 @@ public class EJasonArch extends AgArch {
         this.wake();
       }
     }
+
+
 
     public boolean isAction(String actionStr){
       return actionStr.substring(0,this.actionID.length()).equals(this.actionID);
