@@ -141,7 +141,7 @@ public class EJasonArch extends AgArch {
           //set that the execution was ok
           ((ActionExec)pair.getKey()).setResult(true);
           actionExecuted((ActionExec)pair.getKey());
-          it.remove();
+          waitingConfirmList.remove(pair.getKey());
         }
       }
     }
