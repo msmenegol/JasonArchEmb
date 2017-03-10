@@ -28,6 +28,7 @@ public class PerceptFilter{
         for(Double[] xyz : oldXYZ){
           if(Math.sqrt(Math.pow(newXYZ[0]-xyz[0],2)+Math.pow(newXYZ[1]-xyz[1],2)+Math.pow(newXYZ[2]-xyz[2],2)) < 10) return false;
         }
+        System.out.println("positionReceived");
         return true;
 /* IF NOT IN THE LIST, DON'T FILTER */
       default:
