@@ -2,16 +2,34 @@ import java.util.*;
 import java.lang.*;
 
 public class PerceptFilter{
-  public static boolean filter(String functor, String... terms){
+  //for percepts without args
+  public static boolean filter(String functor){
+    return true;
+  }
+
+  //for percepts with args
+  public static boolean filter(String functor, String[] newTerms, List<String[]> oldTerms){
     switch (functor) {
       case "position":
-        String[] newTerms = terms[0].split("[,]");
-        String[] oldTerms = terms[1].split("[,]");
-        Double[] x = {Double.parseDouble(newTerms[0]), Double.parseDouble(oldTerms[0])};
-        Double[] y = {Double.parseDouble(newTerms[1]), Double.parseDouble(oldTerms[1])};
-        Double[] z = {Double.parseDouble(newTerms[2]), Double.parseDouble(oldTerms[2])};
-        if(Math.sqrt(Math.pow(x[0]-x[1],2)+Math.pow(y[0]-y[1],2)+Math.pow(z[0]-z[1],2)) < 10) return false;
-        else return true;
+/* FILTER POSITION */
+        Double[] newXYZ = new Double[newTerms.length];
+        for(int i=0;i<newXYZ.length;i++){
+          newXYZ[i] = Double.parseDouble(newTerms[i]);
+        }
+
+        List<Double[]> oldXYZ = new ArrayList<Double[]>();
+        for(String[] strings : oldTerms){
+          oldXYZ.add(new Double[strings.length]);
+          for(int i=0;i<strings.length;i++){
+            oldXYZ.get(oldXYZ.size()-1)[i] = Double.parseDouble(strings[i]);//set last element added to oldXYZ
+          }
+        }
+
+        for(Double[] xyz : oldXYZ){
+          if(Math.sqrt(Math.pow(newXYZ[0]-xyz[0],2)+Math.pow(newXYZ[1]-xyz[1],2)+Math.pow(newXYZ[2]-xyz[2],2)) < 10) return false;
+        }
+        return true;
+/* IF NOT IN THE LIST, DON'T FILTER */
       default:
         return true;
     }
