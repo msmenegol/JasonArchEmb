@@ -7,7 +7,7 @@ import jason.asSyntax.*;
 
 public class JasonBulb implements Runnable{
   //timeout time in ms
-  public static final int timeout = 1000;
+  private static final int timeout = 1000;
   //parent architecture instance
   private EJasonArch cortex;
   //ready
@@ -66,7 +66,7 @@ public class JasonBulb implements Runnable{
       while(!this.ready);//do not try to send before buffers are set up
       try{
         if(this.socket.getInetAddress().isReachable(timeout)){
-          System.out.println("sending " + message);
+          //System.out.println("sending " + message);
           this.out.println(message);
           return true;
         }
@@ -83,11 +83,11 @@ public class JasonBulb implements Runnable{
     if(this.socket!=null){
       try{
         if(this.socket.getInetAddress().isReachable(timeout)){
-          System.out.println("reading");
+          //System.out.println("reading");
 
           String message = this.in.readLine();
 
-          System.out.println("message is " + message);
+          //System.out.println("message is " + message);
 
           if(!message.equals("")){//if it's a valid message
             if(cortex.isAction(message)){//if it's an action
@@ -112,7 +112,7 @@ public class JasonBulb implements Runnable{
               }
             }
           }
-          System.out.println("message is empty");
+          //System.out.println("message is empty");
         }
       } catch(Exception e) {
         e.printStackTrace();

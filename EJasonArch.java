@@ -19,6 +19,7 @@ public class EJasonArch extends AgArch {
   private static final String actionID = "!";
   private static final String perceptID = "";
   private static final String failID = "@";
+  private static final String heartbeat = "*";
   //*********************************************************
 
 
@@ -52,6 +53,7 @@ public class EJasonArch extends AgArch {
       //p.add(waypoint);
       p.addAll(this.worldState);
       //p.addAll();
+      bulb.bulbSend(this.heartbeat);//request new percepts
       return p;
   }
 
@@ -139,18 +141,18 @@ public class EJasonArch extends AgArch {
     }
 
     public void confirmAction(String actionStr){
-      System.out.println("confirming " + waitingConfirmList.size());
+      //System.out.println("confirming " + waitingConfirmList.size());
       Iterator it = waitingConfirmList.entrySet().iterator();
       while(it.hasNext()){
-        System.out.println("term in it");
+        //System.out.println("term in it");
         Map.Entry pair = (Map.Entry)it.next();
         if(pair.getValue().equals(actionStr)){
           //set that the execution was ok
-          System.out.println("match found");
+          //System.out.println("match found");
           ((ActionExec)pair.getKey()).setResult(true);
           actionExecuted((ActionExec)pair.getKey());
           waitingConfirmList.remove(pair.getKey());
-          System.out.println("action confirmed");
+          //System.out.println("action confirmed");
         }
       }
     }
