@@ -155,6 +155,14 @@ public class EJasonArch extends AgArch {
       return failStr.substring(0,this.failID.length()).equals(this.failID);
     }
 
+    public String decodeFail(String message){
+      return message.substring(this.failID.length(),message.length());
+    }
+
+    private String encodeFail(String message){
+      return this.failID+message;
+    }
+
 
     public boolean isAction(String actionStr){
       return actionStr.substring(0,this.actionID.length()).equals(this.actionID);
