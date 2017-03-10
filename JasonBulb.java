@@ -52,6 +52,7 @@ public class JasonBulb implements Runnable{
 
     while(true){
       bulbReceive();
+      cotex.wake();
     }
   }
     // make the connection with the socket
@@ -107,6 +108,7 @@ public class JasonBulb implements Runnable{
               }
             }
           }
+          System.out.println("message is empty");
         }
       } catch(Exception e) {
         e.printStackTrace();
