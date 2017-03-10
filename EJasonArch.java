@@ -61,7 +61,7 @@ public class EJasonArch extends AgArch {
   public List<Literal> perceive() {
       List<Literal> p = new ArrayList<Literal>();//super.perceive();
       //p.add(waypoint);
-      p.addAll(worldState);
+      p.addAll(this.worldState);
       //p.addAll();
       return p;
   }
@@ -83,12 +83,10 @@ public class EJasonArch extends AgArch {
 
     }
 
-    public void addState(String state){
-      String[] strTerms = state.split("[(),]");//get functor, aka thing before "("
-
-      Literal literalState = ASSyntax.createLiteral(strTerms[0]);
-
-      //Build literalState to be added
+    public void addPercept(String percept){
+      String[] strTerms = percept.split("[(),]");//get functor, aka thing before "("
+      Literal literalPercept = ASSyntax.createLiteral(strTerms[0]);
+      //Build literalPercept to be added
       if(!strTerms[0].isEmpty()){//if there is a functor
         if(strTerms.length>1){
           for(int i=1; i < strTerms.length; i++){
@@ -98,14 +96,14 @@ public class EJasonArch extends AgArch {
                 number = Double.parseDouble(strTerms[i]);
               }catch(Exception e){e.printStackTrace();}
 
-              literalState.addTerm(ASSyntax.createNumber(number));
+              literalPercept.addTerm(ASSyntax.createNumber(number));
             }else{ //otherwise, it's a string
-              literalState.addTerm(ASSyntax.createString(strTerms[i]));
+              literalPercept.addTerm(ASSyntax.createString(strTerms[i]));
             }
           }
         }
-        worldState.removeAll(findFunctor(worldState, strTerms[0]));//remove all emergencies with same functor
-        worldState.add(literalState);
+        this.worldState.removeAll(findFunctor(worldState, strTerms[0]));//remove all emergencies with same functor
+        this.worldState.add(literalPercept);
       }
     }
 
@@ -119,7 +117,16 @@ public class EJasonArch extends AgArch {
       return matches;
     }
 
-    private String actionToString(ActionExec action){
+    public List<String[]> getPercepts(String functor){
+      List<Literal> litPercepts = findFunctor(this.worldState, functor);
+      List<String[]> strPercepts = new ArrayList<String[]>();
+      for(Literal object : litPercepts){
+        strPercepts.add(((Literal) object).toString().split("[(),]"));
+      }
+      return strPercepts;
+    }
+
+    public String actionToString(ActionExec action){
       String s = action.getActionTerm().getFunctor() + "(";
       List<Term> terms = action.getActionTerm().getTerms();
       for(Term term : terms){
@@ -134,6 +141,7 @@ public class EJasonArch extends AgArch {
       s = s.substring(0, s.length()-1) + ")"; //take last ',' out and close with ')'
       return s;
     }
+
 
     public void confirmAction(String actionStr){
       System.out.println("Confirmation was called with " + actionStr);

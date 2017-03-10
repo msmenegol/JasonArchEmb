@@ -24,6 +24,8 @@ sock.bind(server_address)
 # Listen for incoming connections
 sock.listen(1)
 
+it=0
+
 while True:
     # Wait for a connection
     print >>sys.stderr, 'waiting for a connection'
@@ -40,8 +42,15 @@ while True:
                 print >>sys.stderr, 'sending data back to the client'
                 connection.sendall(encodeSock(data, JAVAPORT))
                 connection.sendall(encodeSock("lowBat(5)",JAVAPORT))
+                while it<100:
+                    print >>sys.stderr, 'sending position'
+                    msg = "position(" + str(it) + "," + str(it) + "," + str(it) + ")"
+                    print >>sys.stderr, msg
+                    connection.sendall(encodeSock(msg, JAVAPORT))
+                    it = it+10
             else:
                 print >>sys.stderr, 'no more data from', client_address
+                it=0
                 break
 
     finally:
