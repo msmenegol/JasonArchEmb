@@ -97,6 +97,7 @@ public class JasonBulb implements Runnable{
               //System.out.println("sendEm");
               cortex.confirmAction(cortex.decodeAction(message));//confirm execution
             } else if(cortex.isPercept(message)){//then it's a percept
+              System.out.println(message);
               String decodedPercept = cortex.decodePercept(message);
               String[] parts = decodedPercept.split("[(),]");//separate into functor and the rest
               List<String[]> oldPercepts = cortex.getPercepts(parts[0]);//get all percepts such as this one
@@ -104,10 +105,12 @@ public class JasonBulb implements Runnable{
               if(oldPercepts.isEmpty()) cortex.addPercept(decodedPercept); //if there are no others like this one
               else if(parts.length<2){ //there are no arguments to this percept
                 if(PerceptFilter.filter(parts[0])) cortex.addPercept(decodedPercept);
+                System.out.println("noArgs percept");
               } else {//if there are functor and arguments
+                System.out.println("resetting oldPercepts");
+                for(int i=0; i<oldPercepts.size(); i++){
 
-                for(for i=1; i<oldPercepts.size(); i++){
-                  oldPercepts[i] = Arrays.copyOfRange(oldPercepts[i].split("[(),]"), 1, oldPercepts[i].length); //substitute each one by just the rest
+                  oldPercepts.set(i, Arrays.copyOfRange(oldPercepts.get(i), 1, oldPercepts.get(i).length)); //substitute each one by just the rest
                 }
                 if(PerceptFilter.filter(parts[0], Arrays.copyOfRange(parts,1,parts.length), oldPercepts)) cortex.addPercept(decodedPercept);
               }
