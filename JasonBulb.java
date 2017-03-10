@@ -60,18 +60,21 @@ public class JasonBulb implements Runnable{
       this.socket = new Socket(ip, port);
   }
 
-  public void bulbSend(String message){//return true if message was sent
+  public boolean bulbSend(String message){//return true if message was sent
     if(this.socket!=null){
       while(!this.ready);//do not try to send before buffers are set up
       try{
         if(this.socket.getInetAddress().isReachable(timeout)){
           System.out.println("sending " + message);
           this.out.println(message);
+          return true;
         }
       } catch (Exception e) {
         e.printStackTrace();
+        return false;
       }
     }
+    return false;
   }
 
 
@@ -85,7 +88,7 @@ public class JasonBulb implements Runnable{
 
           System.out.println("message is " + message);
 
-          if(!message.equals("")){//if it's a alid message
+          if(!message.equals("")){//if it's a valid message
             if(cortex.isAction(message)){//if it's an action
               cortex.confirmAction(cortex.decodeAction(message));//confirm execution
             } else if(cortex.isPercept(message)){//then it's a percept
