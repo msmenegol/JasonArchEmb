@@ -95,7 +95,6 @@ public class EJasonArch extends AgArch {
         this.worldState.removeAll(findFunctor(worldState, strTerms[0]));//remove all emergencies with same functor
         this.worldState.add(literalPercept);
       }
-      this.wake();
     }
 
     private List<Literal> findFunctor(List<Literal> list, String functor){
@@ -147,7 +146,6 @@ public class EJasonArch extends AgArch {
           actionExecuted((ActionExec)pair.getKey());
           waitingConfirmList.remove(pair.getKey());
         }
-        this.wake();
       }
     }
 
@@ -161,7 +159,6 @@ public class EJasonArch extends AgArch {
           actionExecuted((ActionExec)pair.getKey());
           waitingConfirmList.remove(pair.getKey());
         }
-        this.wake();
       }
     }
 
