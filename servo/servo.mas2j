@@ -1,0 +1,11 @@
+MAS servo{
+
+    infrastructure: Centralised
+
+    //environment: MixedEnvironment // this class uses normal Jason environment and also CArtAgO environment
+
+    agents:
+        servoAgent
+          agentArchClass EJasonArch; // architecture
+
+}
