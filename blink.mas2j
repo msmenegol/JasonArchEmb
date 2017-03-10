@@ -1,0 +1,11 @@
+MAS blink{
+
+    infrastructure: Centralised
+
+    //environment: MixedEnvironment // this class uses normal Jason environment and also CArtAgO environment
+
+    agents:
+        blinker
+          agentArchClass EJasonArch; // architecture
+
+}
