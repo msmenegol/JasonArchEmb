@@ -29,6 +29,9 @@ public class EJasonArch extends AgArch {
   private List<Literal> worldState = new ArrayList<Literal>();
 
   private Map<ActionExec,String> waitingConfirmList = new HashMap<ActionExec,String>();
+  //public boolean waitListFree = false;
+  //private List<ActionExec> waitingConfirmListA = new ArrayList<ActionExec>();
+  //private List<String> waitingConfirmListB = new ArrayList<String>();
 
   @Override
   public void init(){
@@ -64,7 +67,7 @@ public class EJasonArch extends AgArch {
 
         if(!done){
           //Abort action
-          failAction(actionToString(action));
+          //failAction(actionToString(action));
           action.setResult(false);
           actionExecuted(action);
           System.out.println("action fail");
@@ -135,9 +138,8 @@ public class EJasonArch extends AgArch {
       return s;
     }
 
-
     public void confirmAction(String actionStr){
-      System.out.println("confirming");
+      System.out.println("confirming " + waitingConfirmList.size());
       Iterator it = waitingConfirmList.entrySet().iterator();
       while(it.hasNext()){
         System.out.println("term in it");
