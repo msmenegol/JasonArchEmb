@@ -151,6 +151,9 @@ public class EJasonArch extends AgArch {
       }
     }
 
+    public boolean isFail(String failStr){
+      return failStr.substring(0,this.failID.length()).equals(this.failID);
+    }
 
 
     public boolean isAction(String actionStr){
