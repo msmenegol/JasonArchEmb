@@ -4,6 +4,7 @@ import jason.asSemantics.*;
 import jason.asSyntax.*;
 import jason.infra.centralised.BaseCentralisedMAS;
 import java.util.*;
+import java.util.concurrent.*;
 
 
 //import jasonBulb;//client class
@@ -29,7 +30,7 @@ public class EJasonArch extends AgArch {
 
   private List<Literal> worldState = new ArrayList<Literal>();
 
-  private Map<ActionExec,String> waitingConfirmList = new HashMap<ActionExec,String>();
+  private ConcurrentHashMap<ActionExec,String> waitingConfirmList = new ConcurrentHashMap<ActionExec,String>();
   //public boolean waitListFree = false;
   //private List<ActionExec> waitingConfirmListA = new ArrayList<ActionExec>();
   //private List<String> waitingConfirmListB = new ArrayList<String>();
@@ -145,13 +146,14 @@ public class EJasonArch extends AgArch {
       Iterator it = waitingConfirmList.entrySet().iterator();
       while(it.hasNext()){
         //System.out.println("term in it");
-        Map.Entry pair = (Map.Entry)it.next();
+        Map.Entry pair = (Map.Entry) it.next();
         if(pair.getValue().equals(actionStr)){
           //set that the execution was ok
           //System.out.println("match found");
           ((ActionExec)pair.getKey()).setResult(true);
           actionExecuted((ActionExec)pair.getKey());
-          waitingConfirmList.remove(pair.getKey());
+          it.remove();
+          //waitingConfirmList.remove(pair.getKey());
           //System.out.println("action confirmed");
         }
       }
@@ -165,7 +167,8 @@ public class EJasonArch extends AgArch {
           //set that the execution was ok
           ((ActionExec)pair.getKey()).setResult(false);
           actionExecuted((ActionExec)pair.getKey());
-          waitingConfirmList.remove(pair.getKey());
+          it.remove();
+          //waitingConfirmList.remove(pair.getKey());
         }
       }
     }
