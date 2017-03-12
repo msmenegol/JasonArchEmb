@@ -89,7 +89,7 @@ public class JasonBulb implements Runnable{
 
           //System.out.println("message is " + message);
 
-          if(!message.equals("")){//if it's a valid message
+          if(!message.equals("") && !cortex.isHeartbeat(message)){//if it's a valid message
             if(cortex.isAction(message)){//if it's an action
               cortex.confirmAction(cortex.decodeAction(message));//confirm execution
 

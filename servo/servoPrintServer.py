@@ -1,6 +1,7 @@
 import socket
 import os
 import sys
+import time
 #import Adafruit_BBIO.GPIO as GPIO
 #import Adafruit_BBIO.ADC as ADC
 #import Adafruit_BBIO.PWM as PWM
@@ -54,15 +55,6 @@ while True:
             #potAngle = GPIO.input("P8_14")*180;
             #potPercept = "pot(" + str(potAngle) + ")"
             #print >>sys.stderr, potPercept
-
-            potSim = potSim + 30
-
-            if potSim>180:
-                potSim = 0
-
-            potPercept = "pot(" + str(potSim) + ")"
-            connection.sendall(encodeSock(potPercept, JAVAPORT))
-
             data = connection.recv(1024)
             if data:
                 if decodeSock(data,JAVAPORT) != "*":
@@ -74,6 +66,14 @@ while True:
                         #PWM.set_duty_cycle(servo_pin, duty)
 
                         connection.sendall(encodeSock(data, JAVAPORT))
+                else:
+                    potSim = potSim + 30
+                    if potSim>180:
+                        potSim = 0
+                    potPercept = "pot(" + str(potSim) + ")"
+                    connection.sendall(encodeSock(potPercept, JAVAPORT))
+
+                time.sleep(1)
             else:
                 #print >>sys.stderr, 'no action'
                 break
