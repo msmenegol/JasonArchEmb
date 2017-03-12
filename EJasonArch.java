@@ -209,6 +209,10 @@ public class EJasonArch extends AgArch {
       return this.perceptID+message;
     }
 
+    public boolean isHeartbeat(String message){
+      return this.heartbeat.equals(message);
+    }
+
 
 
     //@Override
