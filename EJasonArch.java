@@ -4,9 +4,7 @@ import jason.asSemantics.*;
 import jason.asSyntax.*;
 import jason.infra.centralised.BaseCentralisedMAS;
 import java.util.*;
-
-
-//import jasonBulb;//client class
+import java.util.concurrent.*;
 
 /**
  * Example of an agent that only uses Jason BDI engine. It runs without all
@@ -19,6 +17,7 @@ public class EJasonArch extends AgArch {
   private static final String actionID = "!";
   private static final String perceptID = "";
   private static final String failID = "@";
+  private static final String heartbeat = "*";
   //*********************************************************
 
 
@@ -28,10 +27,7 @@ public class EJasonArch extends AgArch {
 
   private List<Literal> worldState = new ArrayList<Literal>();
 
-  private Map<ActionExec,String> waitingConfirmList = new HashMap<ActionExec,String>();
-  //public boolean waitListFree = false;
-  //private List<ActionExec> waitingConfirmListA = new ArrayList<ActionExec>();
-  //private List<String> waitingConfirmListB = new ArrayList<String>();
+  private ConcurrentHashMap<ActionExec,String> waitingConfirmList = new ConcurrentHashMap<ActionExec,String>();
 
   @Override
   public void init(){
@@ -52,6 +48,7 @@ public class EJasonArch extends AgArch {
       //p.add(waypoint);
       p.addAll(this.worldState);
       //p.addAll();
+      bulb.bulbSend(this.heartbeat);//request new percepts
       return p;
   }
 
@@ -67,7 +64,6 @@ public class EJasonArch extends AgArch {
 
         if(!done){
           //Abort action
-          //failAction(actionToString(action));
           action.setResult(false);
           actionExecuted(action);
           System.out.println("action fail");
@@ -139,18 +135,18 @@ public class EJasonArch extends AgArch {
     }
 
     public void confirmAction(String actionStr){
-      System.out.println("confirming " + waitingConfirmList.size());
+
       Iterator it = waitingConfirmList.entrySet().iterator();
       while(it.hasNext()){
-        System.out.println("term in it");
-        Map.Entry pair = (Map.Entry)it.next();
+
+        Map.Entry pair = (Map.Entry) it.next();
         if(pair.getValue().equals(actionStr)){
           //set that the execution was ok
-          System.out.println("match found");
+
           ((ActionExec)pair.getKey()).setResult(true);
           actionExecuted((ActionExec)pair.getKey());
-          waitingConfirmList.remove(pair.getKey());
-          System.out.println("action confirmed");
+          it.remove();
+
         }
       }
     }
@@ -163,7 +159,8 @@ public class EJasonArch extends AgArch {
           //set that the execution was ok
           ((ActionExec)pair.getKey()).setResult(false);
           actionExecuted((ActionExec)pair.getKey());
-          waitingConfirmList.remove(pair.getKey());
+          it.remove();
+          //waitingConfirmList.remove(pair.getKey());
         }
       }
     }
@@ -202,6 +199,10 @@ public class EJasonArch extends AgArch {
 
     private String encodePercept(String message){
       return this.perceptID+message;
+    }
+
+    public boolean isHeartbeat(String message){
+      return this.heartbeat.equals(message);
     }
 
 
