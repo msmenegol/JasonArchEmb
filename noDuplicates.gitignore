@@ -1,0 +1,6 @@
+#every example needs EJasonArch and JasonBulb to work. Ignore their commits
+blink/EJasonArch*
+blink/JasonBulb*
+servo/EJasonArch*
+servo/JasonBulb
+UAVexample/
