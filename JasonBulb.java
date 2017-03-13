@@ -66,7 +66,6 @@ public class JasonBulb implements Runnable{
       while(!this.ready);//do not try to send before buffers are set up
       try{
         if(this.socket.getInetAddress().isReachable(timeout)){
-          //System.out.println("sending " + message);
           this.out.println(message);
           return true;
         }
@@ -83,11 +82,8 @@ public class JasonBulb implements Runnable{
     if(this.socket!=null){
       try{
         if(this.socket.getInetAddress().isReachable(timeout)){
-          //System.out.println("reading");
 
           String message = this.in.readLine();
-
-          //System.out.println("message is " + message);
 
           if(!message.equals("") && !cortex.isHeartbeat(message)){//if it's a valid message
             if(cortex.isAction(message)){//if it's an action
@@ -112,7 +108,6 @@ public class JasonBulb implements Runnable{
               }
             }
           }
-          //System.out.println("message is empty");
         }
       } catch(Exception e) {
         e.printStackTrace();
