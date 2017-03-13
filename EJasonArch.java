@@ -6,9 +6,6 @@ import jason.infra.centralised.BaseCentralisedMAS;
 import java.util.*;
 import java.util.concurrent.*;
 
-
-//import jasonBulb;//client class
-
 /**
  * Example of an agent that only uses Jason BDI engine. It runs without all
  * Jason IDE stuff. (see Jason FAQ for more information about this example)
@@ -31,9 +28,6 @@ public class EJasonArch extends AgArch {
   private List<Literal> worldState = new ArrayList<Literal>();
 
   private ConcurrentHashMap<ActionExec,String> waitingConfirmList = new ConcurrentHashMap<ActionExec,String>();
-  //public boolean waitListFree = false;
-  //private List<ActionExec> waitingConfirmListA = new ArrayList<ActionExec>();
-  //private List<String> waitingConfirmListB = new ArrayList<String>();
 
   @Override
   public void init(){
@@ -70,7 +64,6 @@ public class EJasonArch extends AgArch {
 
         if(!done){
           //Abort action
-          //failAction(actionToString(action));
           action.setResult(false);
           actionExecuted(action);
           System.out.println("action fail");
@@ -142,19 +135,18 @@ public class EJasonArch extends AgArch {
     }
 
     public void confirmAction(String actionStr){
-      //System.out.println("confirming " + waitingConfirmList.size());
+
       Iterator it = waitingConfirmList.entrySet().iterator();
       while(it.hasNext()){
-        //System.out.println("term in it");
+
         Map.Entry pair = (Map.Entry) it.next();
         if(pair.getValue().equals(actionStr)){
           //set that the execution was ok
-          //System.out.println("match found");
+
           ((ActionExec)pair.getKey()).setResult(true);
           actionExecuted((ActionExec)pair.getKey());
           it.remove();
-          //waitingConfirmList.remove(pair.getKey());
-          //System.out.println("action confirmed");
+
         }
       }
     }
