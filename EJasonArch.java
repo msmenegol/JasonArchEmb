@@ -101,8 +101,9 @@ public class EJasonArch extends AgArch {
       this.worldState = newState;
     }
 
-    public List<Literal> splitPercepts(String percepts){
-      String[] strPercepts = percepts.split(";");
+    public List<String> splitPercepts(String percepts){
+      return Arrays.asList(percepts.split(";"));
+      /*
       List<Literal> perceptsList = new ArrayList<Literal>();
       for(int i = 0; i<strPercepts.length; i++){
         String[] strTerms = strPercepts[i].split("[(),]");
@@ -128,7 +129,7 @@ public class EJasonArch extends AgArch {
       }
       return perceptsList;
     }
-
+*/
     private List<Literal> findFunctor(List<Literal> list, String functor){
       List<Literal> matches = new ArrayList<Literal>();
       for(Literal object : list){
