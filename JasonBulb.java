@@ -93,7 +93,15 @@ public class JasonBulb implements Runnable{
               cortex.failAction(cortex.decodeFail(cortex.decodeAction(message)));
 
             } else if(cortex.isPercept(message)){//then it's a percept
-              String decodedPercept = cortex.decodePercept(message);
+              List<String[]> newPercepts = cortex.splitPercepts(cortex.decodePercept(message));
+              List<Literal> percepts = new ArrayList<Literal>();
+
+              for(String[] newPercept : newPercepts){
+                percepts.addAll(cortex.toLiteral(PerceptFilter.filter(newPercept,cortex.getPercepts())));
+              }
+
+              cortex.addPercepts(percepts);
+              /*
               String[] parts = decodedPercept.split("[(),]");//separate into functor and the rest
               List<String[]> oldPercepts = cortex.getPercepts(parts[0]);//get all percepts such as this one
 
@@ -106,6 +114,7 @@ public class JasonBulb implements Runnable{
                 }
                 if(PerceptFilter.filter(parts[0], Arrays.copyOfRange(parts,1,parts.length), oldPercepts)) cortex.addPercept(decodedPercept);
               }
+              */
             }
           }
         }
