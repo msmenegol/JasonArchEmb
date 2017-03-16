@@ -26,7 +26,6 @@ public class EJasonArch extends AgArch {
   Thread bulbThread = new Thread(bulb);
 
   private List<Literal> worldState = new ArrayList<Literal>();
-  private List<Literal> newWorldState = new ArrayList<Literal>();
 
   private ConcurrentHashMap<ActionExec,String> waitingConfirmList = new ConcurrentHashMap<ActionExec,String>();
 
