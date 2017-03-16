@@ -102,7 +102,7 @@ public class EJasonArch extends AgArch {
     }
 
     public List<String[]> splitPercepts(String percepts){
-      List<String[]> terms = new ArrayList<String[]>;
+      List<String[]> terms = new ArrayList<String[]>();
       String[] splitPercepts = percepts.split(";"); //at this stage, each element is a string p(x,y)
       for(int i = 0; i<splitPercepts.length; i++){
         terms.add(splitPercepts[i].split("[(),]"));//each element of terms become [p, x, y]
