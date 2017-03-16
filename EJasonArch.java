@@ -98,9 +98,9 @@ public class EJasonArch extends AgArch {
       }
     }
 
-    public List<Literal> addPercepts(String percepts){
+    public void addPercepts(String percepts){
       String[] strPercepts = percepts.split(";");
-
+      List<Literal> perceptsList = new ArrayList<Literal>();
       for(int i = 0; i<strPercepts.length; i++){
         String[] strTerms = strPercepts[i].split("[(),]");
         Literal literalPercept = ASSyntax.createLiteral(strTerms[0]);//first is functor
@@ -120,8 +120,10 @@ public class EJasonArch extends AgArch {
               }
             }
           }
+          perceptsList.add(literalPercept);
+        }
       }
-      return this.newWorldState;
+      this.worldState = perceptsList;
     }
 
     private List<Literal> findFunctor(List<Literal> list, String functor){
