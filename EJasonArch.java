@@ -179,6 +179,15 @@ public class EJasonArch extends AgArch {
       return strPercepts;
     }
 
+    public List<String[]> getPercepts(){
+      List<Literal> litPercepts = this.worldState;
+      List<String[]> strPercepts = new ArrayList<String[]>();
+      for(Literal object : litPercepts){
+        strPercepts.add(((Literal) object).toString().split("[(),]"));
+      }
+      return strPercepts;
+    }
+
     public String actionToString(ActionExec action){
       String s = action.getActionTerm().getFunctor();
       List<Term> terms = action.getActionTerm().getTerms();
