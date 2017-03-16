@@ -97,8 +97,8 @@ public class EJasonArch extends AgArch {
       }
     }
 
-    public void addPercepts(String percepts){
-      this.worldState = splitPercepts(percepts);
+    public void addPercepts(List<Literal> newState){
+      this.worldState = newState;
     }
 
     public List<Literal> splitPercepts(String percepts){
