@@ -14,7 +14,7 @@ public class PerceptFilter{
 */
   //for percepts with args
   public static List<String[]> filter(String[] newPercept, List<String[]> oldPercepts){
-    List<String[]> filteredPercepts = new ArrayList<String[]>;
+    List<String[]> filteredPercepts = new ArrayList<String[]>();
     switch (newPercept[0]) {//switch on the functor of the percept
       //ADD OTHER PERCEPTS CASES HERE
       default:

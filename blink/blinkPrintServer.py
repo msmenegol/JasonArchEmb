@@ -29,6 +29,8 @@ sock.bind(server_address)
 # Listen for incoming connections
 sock.listen(1)
 
+ledState = 0
+
 while True:
     # Wait for a connection
     connection, client_address = sock.accept()
@@ -38,14 +40,24 @@ while True:
             data = connection.recv(1024)
             if data:
                 #print >>sys.stderr, data
-                if decodeSock(data,JAVAPORT) == '!ledOn':
+                if decodeSock(data,JAVAPORT) == '!turnLedOn':
                     #os.system(led0_on)
                     print >>sys.stderr, 'on'
-                if decodeSock(data,JAVAPORT) == '!ledOff':
+                    ledState = 1
+                    connection.sendall(encodeSock(data, JAVAPORT))
+                if decodeSock(data,JAVAPORT) == '!turnLedOff':
                     #os.system(led0_off)
+                    ledState = 0
                     print >>sys.stderr, 'off'
+                    connection.sendall(encodeSock(data, JAVAPORT))
 
-                connection.sendall(encodeSock(data, JAVAPORT))
+                if decodeSock(data,JAVAPORT) == '*':
+                    if ledState == 0:
+                        connection.sendall(encodeSock('led(off)', JAVAPORT))
+                    else :
+                        connection.sendall(encodeSock('led(on)', JAVAPORT))
+
+
             else:
                 print >>sys.stderr, 'no action'
                 break
