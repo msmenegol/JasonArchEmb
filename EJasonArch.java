@@ -98,6 +98,10 @@ public class EJasonArch extends AgArch {
     }
 
     public void addPercepts(String percepts){
+      this.worldState = splitPercepts(percepts);
+    }
+
+    public List<Literal> splitPercepts(String percepts){
       String[] strPercepts = percepts.split(";");
       List<Literal> perceptsList = new ArrayList<Literal>();
       for(int i = 0; i<strPercepts.length; i++){
@@ -122,7 +126,7 @@ public class EJasonArch extends AgArch {
           perceptsList.add(literalPercept);
         }
       }
-      this.worldState = perceptsList;
+      return perceptsList;
     }
 
     private List<Literal> findFunctor(List<Literal> list, String functor){
