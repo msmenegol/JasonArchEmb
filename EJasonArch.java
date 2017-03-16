@@ -98,7 +98,9 @@ public class EJasonArch extends AgArch {
       }
     }
 
-
+    public List<Literal> splitPercepts(String percepts){
+      return this.newWorldState;
+    }
 
     private List<Literal> findFunctor(List<Literal> list, String functor){
       List<Literal> matches = new ArrayList<Literal>();
