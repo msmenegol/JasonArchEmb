@@ -110,11 +110,11 @@ public class EJasonArch extends AgArch {
       return terms;
     }
 
-    public List<Literal> toLiteral(List<String> strPercepts){
+    public List<Literal> toLiteral(List<String[]> strPercepts){
       List<Literal> perceptsList = new ArrayList<Literal>();
       if(!strPercepts.isEmpty()){
         for(int i = 0; i<strPercepts.size(); i++){
-          String[] strTerms = strPercepts.get(i).split("[(),]");
+          String[] strTerms = strPercepts.get(i);
 
           if(!strTerms[0].isEmpty()){//if there is a functor
             Literal literalPercept = ASSyntax.createLiteral(strTerms[0]);//first is functor
