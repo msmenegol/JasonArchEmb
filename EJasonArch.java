@@ -98,7 +98,29 @@ public class EJasonArch extends AgArch {
       }
     }
 
-    public List<Literal> splitPercepts(String percepts){
+    public List<Literal> addPercepts(String percepts){
+      String[] strPercepts = percepts.split(";");
+
+      for(int i = 0; i<strPercepts.length; i++){
+        String[] strTerms = strPercepts[i].split("[(),]");
+        Literal literalPercept = ASSyntax.createLiteral(strTerms[0]);//first is functor
+
+        if(!strTerms[0].isEmpty()){//if there is a functor
+          if(strTerms.length>1){
+            for(int j=1; j < strTerms.length; j++){
+              if(strTerms[j].matches(".*\\d+.*")){//if there are numbers in the term
+                double number = Double.NaN;
+                try{
+                  number = Double.parseDouble(strTerms[j]);
+                }catch(Exception e){e.printStackTrace();}
+
+                literalPercept.addTerm(ASSyntax.createNumber(number));
+              }else{ //otherwise, it's a string
+                literalPercept.addTerm(ASSyntax.createString(strTerms[j]));
+              }
+            }
+          }
+      }
       return this.newWorldState;
     }
 
