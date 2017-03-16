@@ -26,6 +26,7 @@ public class EJasonArch extends AgArch {
   Thread bulbThread = new Thread(bulb);
 
   private List<Literal> worldState = new ArrayList<Literal>();
+  private List<Literal> newWorldState = new ArrayList<Literal>();
 
   private ConcurrentHashMap<ActionExec,String> waitingConfirmList = new ConcurrentHashMap<ActionExec,String>();
 
@@ -72,6 +73,7 @@ public class EJasonArch extends AgArch {
 
     }
 
+
     public void addPercept(String percept){
       String[] strTerms = percept.split("[(),]");//get functor, aka thing before "("
       Literal literalPercept = ASSyntax.createLiteral(strTerms[0]);
@@ -95,6 +97,8 @@ public class EJasonArch extends AgArch {
         this.worldState.add(literalPercept);
       }
     }
+
+
 
     private List<Literal> findFunctor(List<Literal> list, String functor){
       List<Literal> matches = new ArrayList<Literal>();
