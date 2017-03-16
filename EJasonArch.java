@@ -266,7 +266,7 @@ public class EJasonArch extends AgArch {
     }
 
     public boolean isHeartbeat(String message){
-      return this.heartbeat.equals(message);
+      return message.startsWith(this.heartbeat);
     }
 
 
