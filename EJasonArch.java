@@ -101,8 +101,13 @@ public class EJasonArch extends AgArch {
       this.worldState = newState;
     }
 
-    public List<String> splitPercepts(String percepts){
-      return Arrays.asList(percepts.split(";"));
+    public List<String[]> splitPercepts(String percepts){
+      List<String[]> terms = new ArrayList<String[]>;
+      String[] splitPercepts = percepts.split(";"); //at this stage, each element is a string p(x,y)
+      for(int i = 0; i<splitPercepts.length; i++){
+        terms.add(splitPercepts[i].split("[(),]"));//each element of terms become [p, x, y]
+      }
+      return terms;
     }
 
     public List<Literal> toLiteral(List<String> strPercepts){
