@@ -103,6 +103,36 @@ public class EJasonArch extends AgArch {
 
     public List<String> splitPercepts(String percepts){
       return Arrays.asList(percepts.split(";"));
+    }
+
+    public List<Literal> toLiteral(List<String> strPercepts){
+      List<Literal> perceptsList = new ArrayList<Literal>();
+      if(!strPercepts.isEmpty()){
+        for(int i = 0; i<strPercepts.size(); i++){
+          String[] strTerms = strPercepts.get(i).split("[(),]");
+
+          if(!strTerms[0].isEmpty()){//if there is a functor
+            Literal literalPercept = ASSyntax.createLiteral(strTerms[0]);//first is functor
+            if(strTerms.length>1){//if there are other terms
+              for(int j=1; j < strTerms.length; j++){
+                if(strTerms[j].matches("\\d+.*")){//if a term starts with numbers
+                  double number = Double.NaN;
+                  try{
+                    number = Double.parseDouble(strTerms[j]);
+                  }catch(Exception e){e.printStackTrace();}
+
+                  literalPercept.addTerm(ASSyntax.createNumber(number));
+                }else{ //otherwise, it's a string
+                  literalPercept.addTerm(ASSyntax.createString(strTerms[j]));
+                }
+              }
+            }
+            perceptsList.add(literalPercept);
+          }
+        }
+      }
+      return perceptsList;
+    }
       /*
       List<Literal> perceptsList = new ArrayList<Literal>();
       for(int i = 0; i<strPercepts.length; i++){
