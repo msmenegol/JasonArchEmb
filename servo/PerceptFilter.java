@@ -2,26 +2,22 @@ import java.util.*;
 import java.lang.*;
 
 public class PerceptFilter{
-  //for percepts without args
-  public static boolean filter(String functor){
-    switch (functor) {
-      //ADD FUNTOR-ONLY CASES HERE
-      default:
-        return true;
-    }
-  }
-
   //for percepts with args
-  public static boolean filter(String functor, String[] newTerms, List<String[]> oldTerms){
-    switch (functor) {
+  public static List<String[]> filter(String[] newPercept, List<String[]> oldPercepts){
+    List<String[]> filteredPercepts = new ArrayList<String[]>();
+    switch (newPercept[0]) {//switch on the functor of the percept
       //ADD OTHER PERCEPTS CASES HERE
       case "pot":
         //System.out.println(newTerms[0] + "   " + oldTerms.get(0)[0]);
-        if(Math.abs(Double.parseDouble(newTerms[0]) - Double.parseDouble(oldTerms.get(0)[0])) > 30 ) {
-          return true;
-        } else return false;
+        for(int i = 0; i<oldPercepts.size(); i++){
+          if(oldPercepts.get(i)[0].equals("pot")){
+            if(Math.abs(Double.parseDouble(oldPercepts.get(i)[1]) - Double.parseDouble(newPercept[1])) < 30) break;
+          }
+        }
+        filteredPercepts.add(newPercept);
       default:
-        return true;
+        filteredPercepts.add(newPercept);
     }
+    return filteredPercepts;
   }
 }
