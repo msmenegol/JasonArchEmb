@@ -63,7 +63,7 @@ while True:
                     inAngleStr = decodeSock(data,JAVAPORT)[10:-1]
                     print >>sys.stderr, 'setting servo ' + inAngleStr
                     connection.sendall(encodeSock(data, JAVAPORT))
-                    if potSim > 180:
+                    if potSim >= 180:
                         potSim = 0
                     else:
                         potSim = potSim + 30
