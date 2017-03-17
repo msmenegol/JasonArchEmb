@@ -19,7 +19,7 @@ public class PerceptFilter{
       //ADD OTHER PERCEPTS CASES HERE
       default:
         filteredPercepts.add(newPercept);
-        return filteredPercepts;
     }
+    return filteredPercepts;
   }
 }
