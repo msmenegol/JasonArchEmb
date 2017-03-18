@@ -11,7 +11,10 @@ public class PerceptFilter{
         //System.out.println(newTerms[0] + "   " + oldTerms.get(0)[0]);
         for(int i = 0; i<oldPercepts.size(); i++){
           if(oldPercepts.get(i)[0].equals("pot")){
-            if(Math.abs(Double.parseDouble(oldPercepts.get(i)[1]) - Double.parseDouble(newPercept[1])) < 30) break;
+            if(Math.abs(Double.parseDouble(oldPercepts.get(i)[1]) - Double.parseDouble(newPercept[1])) < 30){
+              filteredPercepts.add(oldPercepts.get(i));
+              return filteredPercepts;
+            }
           }
         }
         filteredPercepts.add(newPercept);
