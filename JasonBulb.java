@@ -101,20 +101,7 @@ public class JasonBulb implements Runnable{
               }
 
               cortex.addPercepts(percepts);
-              /*
-              String[] parts = decodedPercept.split("[(),]");//separate into functor and the rest
-              List<String[]> oldPercepts = cortex.getPercepts(parts[0]);//get all percepts such as this one
 
-              if(oldPercepts.isEmpty()) cortex.addPercept(decodedPercept); //if there are no others like this one
-              else if(parts.length<2){ //there are no arguments to this percept
-                if(PerceptFilter.filter(parts[0])) cortex.addPercept(decodedPercept);
-              } else {//if there are functor and arguments
-                for(int i=0; i<oldPercepts.size(); i++){
-                  oldPercepts.set(i, Arrays.copyOfRange(oldPercepts.get(i), 1, oldPercepts.get(i).length)); //substitute each one by just the rest
-                }
-                if(PerceptFilter.filter(parts[0], Arrays.copyOfRange(parts,1,parts.length), oldPercepts)) cortex.addPercept(decodedPercept);
-              }
-              */
             }
           }
         }
