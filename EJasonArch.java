@@ -45,10 +45,9 @@ public class EJasonArch extends AgArch {
   @Override
   public List<Literal> perceive() {
       List<Literal> p = new ArrayList<Literal>();//super.perceive();
-      //p.add(waypoint);
       p.addAll(this.worldState);
       //p.addAll();
-      bulb.bulbSend(this.heartbeat);//request new percepts
+      //bulb.bulbSend(this.heartbeat);//request new percepts
       return p;
   }
 
