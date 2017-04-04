@@ -3,6 +3,7 @@ import os
 import sys
 import time
 import random
+import select
 #import Adafruit_BBIO.GPIO as GPIO
 #import Adafruit_BBIO.ADC as ADC
 #import Adafruit_BBIO.PWM as PWM
@@ -25,6 +26,9 @@ import random
 #SERVER
 JAVAPORT = 6969
 
+localPorts = [JAVAPORT]
+remotePorts = []
+
 def decodeSock(str, port):
     return {
         JAVAPORT : str[:-1] #JAVAPORT
@@ -35,75 +39,91 @@ def encodeSock(str, port):
         JAVAPORT : str + '\n'#JAVAPORT
     }[port]
 
-# Create a TCP/IP socket
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# Bind the socket to the port
-server_address = ('localhost', JAVAPORT)
-#print >>sys.stderr, 'starting up on %s port %s' % server_address
-sock.bind(server_address)
-# Listen for incoming connections
-sock.listen(1)
+def createSocket(TCP_PORT):
+    serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    serverSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    #serverSocket.setblocking(0)
+    serverSocket.bind(('localhost', TCP_PORT))
+    serverSocket.listen(1)
+
+    return serverSocket
+
+
+sockList = []
 
 lastTime = time.time()
+
 pplIn = False   #are there people inside?
 sunLight = 0    #sunlight intensity 0-100
 light = 'off';
 rain = False    #is it raining outside?
 window = 'closed' #state of the window
 
+def buildPercept():
+    percept = 'peopleIn(' + str(pplIn).lower() + ');' + \
+                'sunLight(' + str(sunLight) + ');' + \
+                'light(' + light + ');' + \
+                'rain(' + str(rain).lower() + ');' + \
+                'window(' + window + ')'
+
+    return percept
+
+for p in localPorts:
+    sock = createSocket(p)
+    clientSock, address = sock.accept()
+    remotePorts.append(address[1])
+    sockList.append(clientSock)
 
 while True:
-    # Wait for a connection
-    connection, client_address = sock.accept()
 
-    try:
-        while True:
-            #change enironment every 5 seconds
-            if(time.time()-lastTime > 1):
-                lastTime = time.time()
-                rdm = int(random.random()*3)
-                if rdm == 0:
-                    pplIn = not pplIn
-                if rdm == 1:
-                    sunLight = random.random()*100
-                if rdm == 2:
-                    rain = not rain
+#percepts update
+    if(time.time()-lastTime > 1):
+        lastTime = time.time()
+        rdm = int(random.random()*4)
+        if rdm == 0:
+            pplIn = not pplIn
+        if rdm == 1:
+            sunLight = random.random()*100
+        if rdm == 2:
+            rain = not rain
 
-            data = connection.recv(1024)
-            if data:
-                #print >>sys.stderr, data
-                if '!closeWindow' in decodeSock(data,JAVAPORT):
+        _, writable, exceptionalW = select.select([], sockList, sockList, 0.5)
+        for w in writable:
+            if remotePorts[localPorts.index(JAVAPORT)] in w.getpeername():
+                percept = buildPercept()
+                w.sendall(encodeSock(percept, JAVAPORT))
+
+#reads message
+    readable, _ , exceptionalR = select.select(sockList, [], sockList, 0.5)
+
+    for s in readable:
+
+        data = s.recv(1024)
+        if data:
+            decodeData = decodeSock(data, JAVAPORT)
+            if '!' in decodeData:
+
+                if 'closeWindow' in decodeData:
                     print('closing window')
                     window = 'closed'
-                    connection.sendall(encodeSock(data, JAVAPORT))
 
-                if '!openWindow' in decodeSock(data,JAVAPORT):
+                if 'openWindow' in decodeData:
                     print('opening window')
                     window = 'open'
-                    connection.sendall(encodeSock(data, JAVAPORT))
 
-                if '!turnLightOn' in decodeSock(data,JAVAPORT):
+                if 'turnLightOn' in decodeData:
                     print('turning light on')
                     light = 'on'
-                    connection.sendall(encodeSock(data, JAVAPORT))
 
-                if '!turnLightOff' in decodeSock(data,JAVAPORT):
+                if 'turnLightOff' in decodeData:
                     print('turning light off')
                     light = 'off'
-                    connection.sendall(encodeSock(data, JAVAPORT))
 
-                if decodeSock(data,JAVAPORT) == "*":
-                    percept = 'peopleIn(' + str(pplIn).lower() + ');' + \
-                                'sunLight(' + str(sunLight) + ');' + \
-                                'light(' + light + ');' + \
-                                'rain(' + str(rain).lower() + ');' + \
-                                'window(' + window + ')'
-                    connection.sendall(encodeSock(percept, JAVAPORT))
+                _, writable, exceptionalW = select.select([], sockList, sockList, 0.5)
+                for w in writable:
+                    if remotePorts[localPorts.index(JAVAPORT)] in w.getpeername():
+                        w.sendall(encodeSock(decodeData, JAVAPORT))#send action confirmation
 
-            else:
-                print >>sys.stderr, 'no action'
-                break
-
-    finally:
-        # Clean up the connection
-        connection.close()
+        else:
+            s.close()
+            sockList.remove(s)
