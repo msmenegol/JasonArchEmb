@@ -95,7 +95,7 @@ public class EJasonArch extends AgArch {
             if(strTerms.length>1){//if there are other terms
               for(int j=1; j < strTerms.length; j++){
                 try{
-                  literalPercept.addTerm(ASSyntax.parseLiteral(strTerms[j]));
+                  literalPercept.addTerm(ASSyntax.parseTerm(strTerms[j]));
                 }catch(Exception e){e.printStackTrace();}
               }
             }
