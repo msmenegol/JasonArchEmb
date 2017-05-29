@@ -20,12 +20,12 @@
         .wait(100);
         !pooling.
 
-+!pooling : sunLight(X) & X>50 & peopleIn("true") & window("closed") & rain("false")
++!pooling : sunLight(X) & X>50 & peopleIn(true) & window(closed) & rain(false)
     <-  openWindow;
         .wait(100);
         !pooling.
 
-+!pooling : peopleIn("false") & light("on")
++!pooling : peopleIn(false) & light(on)
     <-  turnLightOff;
         .wait(100);
         !pooling.
