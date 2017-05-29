@@ -1,21 +1,21 @@
 !pooling.
 
-+!pooling : rain("true") & window("open")
++!pooling : rain(true) & window(open)
     <-  closeWindow;
         .wait(100);
         !pooling.
 
-+!pooling : window("closed") & peopleIn("true") & light("off")
++!pooling : window(closed) & peopleIn(true) & light(off)
     <-  turnLightOn;
         .wait(100);
         !pooling.
 
-+!pooling : window("open") & sunLight(X) & X>50 & light("on")
++!pooling : window(open) & sunLight(X) & X>50 & light(on)
     <-  turnLightOff;
         .wait(100);
         !pooling.
 
-+!pooling : sunLight(X) & X<50 & light("off") & peopleIn("true")
++!pooling : sunLight(X) & X<50 & light(off) & peopleIn(true)
     <-  turnLightOn;
         .wait(100);
         !pooling.
