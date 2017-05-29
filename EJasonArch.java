@@ -71,24 +71,6 @@ public class EJasonArch extends AgArch {
 
     }
 
-
-    public void addPercept(String percept){
-      String[] strTerms = percept.split("[(),]");//get functor, aka thing before "("
-      Literal literalPercept = ASSyntax.createLiteral(strTerms[0]);
-      //Build literalPercept to be added
-      if(!strTerms[0].isEmpty()){//if there is a functor
-        if(strTerms.length>1){
-          for(int i=1; i < strTerms.length; i++){
-            try{
-              literalPercept.addTerm(ASSyntax.parseLiteral(strTerms[i]));
-            }catch(Exception e){e.printStackTrace();}
-          }
-        }
-        this.worldState.removeAll(findFunctor(worldState, strTerms[0]));//remove all emergencies with same functor
-        this.worldState.add(literalPercept);
-      }
-    }
-
     public void addPercepts(List<Literal> newState){
       this.worldState = newState;
     }
