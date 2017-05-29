@@ -94,16 +94,9 @@ public class EJasonArch extends AgArch {
             Literal literalPercept = ASSyntax.createLiteral(strTerms[0]);//first is functor
             if(strTerms.length>1){//if there are other terms
               for(int j=1; j < strTerms.length; j++){
-                if(strTerms[j].matches("\\d+.*")){//if a term starts with numbers
-                  double number = Double.NaN;
-                  try{
-                    number = Double.parseDouble(strTerms[j]);
-                  }catch(Exception e){e.printStackTrace();}
-
-                  literalPercept.addTerm(ASSyntax.createNumber(number));
-                }else{ //otherwise, it's a string
-                  literalPercept.addTerm(ASSyntax.createString(strTerms[j]));
-                }
+                try{
+                  literalPercept.addTerm(ASSyntax.parseLiteral(strTerms[j]));
+                }catch(Exception e){e.printStackTrace();}
               }
             }
             perceptsList.add(literalPercept);
