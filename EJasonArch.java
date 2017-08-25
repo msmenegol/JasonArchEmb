@@ -55,9 +55,9 @@ public class EJasonArch extends AgArch {
     @Override
     public void act(ActionExec action) {
 
-        waitingConfirmList.put(action,actionToString(action));
+        waitingConfirmList.put(action,action.getAsDOM());
 
-        boolean done = bulb.bulbSend(encodeAction(actionToString(action)));
+        boolean done = bulb.bulbSend(encodeAction(action.getAsDOM()));
 
         if(!done){
           //Abort action
@@ -158,9 +158,10 @@ public class EJasonArch extends AgArch {
       return strPercepts;
     }
 
-    public String actionToString(ActionExec action){
+    public String actionToXML(ActionExec action){
       String s = action.getActionTerm().getFunctor();
       List<Term> terms = action.getActionTerm().getTerms();
+
       if (action.getActionTerm().hasTerm()){
         s = s + "(";
         for(Term term : terms){
