@@ -61,7 +61,7 @@ public class JasonBulb implements Runnable{
       this.socket = new Socket(ip, port);
   }
 
-  public boolean bulbSend(String message){//return true if message was sent
+  public boolean bulbSend(Object message){//return true if message was sent
     if(this.socket!=null){
       while(!this.ready);//do not try to send before buffers are set up
       try{
