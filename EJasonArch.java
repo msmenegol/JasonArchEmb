@@ -55,8 +55,6 @@ public class EJasonArch extends AgArch {
     @Override
     public void act(ActionExec action) {
 
-        String s = actionToString(action);
-
         waitingConfirmList.put(action,actionToString(action));
 
         boolean done = bulb.bulbSend(encodeAction(actionToString(action)));
