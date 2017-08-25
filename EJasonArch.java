@@ -27,7 +27,7 @@ public class EJasonArch extends AgArch {
 
   private List<Literal> worldState = new ArrayList<Literal>();
 
-  private ConcurrentHashMap<ActionExec,Object> waitingConfirmList = new ConcurrentHashMap<ActionExec,String>();
+  private ConcurrentHashMap<ActionExec,Object> waitingConfirmList = new ConcurrentHashMap<ActionExec,Object>();
 
   @Override
   public void init(){
