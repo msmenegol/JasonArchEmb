@@ -178,19 +178,17 @@ public class EJasonArch extends AgArch {
       return s;
     }
 
-    public void confirmAction(String actionStr){
+    public void confirmAction(Object actionXML){
 
       Iterator it = waitingConfirmList.entrySet().iterator();
       while(it.hasNext()){
 
         Map.Entry pair = (Map.Entry) it.next();
-        if(pair.getValue().equals(actionStr)){
+        if(pair.getValue().isEqualNode(actionXML)){
           //set that the execution was ok
-
           ((ActionExec)pair.getKey()).setResult(true);
           actionExecuted((ActionExec)pair.getKey());
           it.remove();
-
         }
       }
     }
