@@ -50,7 +50,7 @@ public class JasonBulb implements Runnable{
 
     this.ready = true;
 
-    bulbSend(cortex.agentName);
+    bulbSend(cortex.getAgName());
 
     while(true){
       bulbReceive();
