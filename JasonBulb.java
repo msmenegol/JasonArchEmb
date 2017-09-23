@@ -119,4 +119,8 @@ public class JasonBulb implements Runnable{
   private Socket getSocket() {
        return socket;
   }
+
+  public boolean isReady() {
+    return this.ready;
+  }
 }
