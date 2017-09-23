@@ -20,7 +20,6 @@ public class EJasonArch extends AgArch {
   private static final String messageID = "*";
   //*********************************************************
   private static Logger logger = Logger.getLogger(EJasonArch.class.getSimpleName());
-  public static String agentName = this.getAgName();
 
   //JasonBulb makes the interface between the Agent and the rest of the system
   private JasonBulb bulb = new JasonBulb(this);
@@ -43,7 +42,7 @@ public class EJasonArch extends AgArch {
       }catch(Exception e){e.printStackTrace();}
     }
   }
-  
+
     // this method just add some perception for the agent
   @Override
   public Collection<Literal> perceive() {
