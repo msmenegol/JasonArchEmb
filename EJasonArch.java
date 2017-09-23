@@ -37,10 +37,11 @@ public class EJasonArch extends AgArch {
     bulbThread.setDaemon(true);
     bulbThread.start();
 
-    try{
-      Thread.sleep(200);//wait a bit for bulb to start up
-    }catch(Exception e){e.printStackTrace();}
-
+    while(!bulbThread.ready){
+      try{
+          Thread.sleep(20);//wait a bit for bulb to start up
+      }catch(Exception e){e.printStackTrace();}
+    }
   }
     // this method just add some perception for the agent
 
