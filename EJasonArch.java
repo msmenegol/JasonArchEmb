@@ -36,7 +36,7 @@ public class EJasonArch extends AgArch {
     bulbThread.setDaemon(true);
     bulbThread.start();
 
-    while(!bulbThread.ready){
+    while(!bulbThread.isReady()){
       try{
           Thread.sleep(20);//wait a bit for bulb to start up
       }catch(Exception e){e.printStackTrace();}
