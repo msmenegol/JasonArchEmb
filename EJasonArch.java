@@ -43,8 +43,8 @@ public class EJasonArch extends AgArch {
       }catch(Exception e){e.printStackTrace();}
     }
   }
+  
     // this method just add some perception for the agent
-
   @Override
   public Collection<Literal> perceive() {
       Collection<Literal> p = new ArrayList<Literal>();//super.perceive();
