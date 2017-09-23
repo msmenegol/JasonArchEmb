@@ -57,25 +57,23 @@ while True:
             #print >>sys.stderr, potPercept
             data = connection.recv(1024)
             if data:
-                if decodeSock(data,JAVAPORT) != "*":
-                    if '!setServo(' in decodeSock(data,JAVAPORT) :
-                        inAngleStr = decodeSock(data,JAVAPORT)[10:-1]
-                        print >>sys.stderr, 'setting servo ' + inAngleStr
-                        #inAngleNum = float(inAngleStr)
-                        #duty = 100 - ((inAngleNum / 180) * duty_span + duty_min)
-                        #PWM.set_duty_cycle(servo_pin, duty)
-
-                        connection.sendall(encodeSock(data, JAVAPORT))
-                else:
-                    potSim = potSim + 30
-                    if potSim>180:
+                #print >>sys.stderr, data
+                if '!setServo' in decodeSock(data,JAVAPORT):
+                #os.system(led0_on)
+                    inAngleStr = decodeSock(data,JAVAPORT)[10:-1]
+                    print >>sys.stderr, 'setting servo ' + inAngleStr
+                    connection.sendall(encodeSock(data, JAVAPORT))
+                    if potSim >= 180:
                         potSim = 0
+                    else:
+                        potSim = potSim + 30
+
+                if decodeSock(data,JAVAPORT) == "*":
                     potPercept = "pot(" + str(potSim) + ")"
                     connection.sendall(encodeSock(potPercept, JAVAPORT))
 
-                time.sleep(1)
             else:
-                #print >>sys.stderr, 'no action'
+                print >>sys.stderr, 'no action'
                 break
 
     finally:
