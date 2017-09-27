@@ -86,10 +86,10 @@ public class EJasonArch extends AgArch {
     }
   }
 
-  //broadcasts are just a send with double msgID at the front
+  //broadcasts are the same as send, but the destination is null
   @Override
   public void broadcast(jason.asSemantics.Message m) throws Exception {
-    boolean sent = bulb.bulbSend(encodeMessage(encodeMessage(m.toString())));
+    boolean sent = bulb.bulbSend(encodeMessage(m.toString()));
     if(!sent){
       throw new Exception("Broadcast not sent");
     }
