@@ -31,7 +31,7 @@ public class JasonBulb implements Runnable{
     try{
       String[] line;
       BufferedReader conInfo = new BufferedReader(new FileReader("connectionInfo"));
-      if((line = (conInfo.readLine()).split(":"))[0].equals("port")){this.ip = line[1];}
+      if((line = (conInfo.readLine()).split(":"))[0].equals("ip")){this.ip = line[1];}
       if((line = (conInfo.readLine()).split(":"))[0].equals("port")){this.port = Integer.parseInt(line[1]);}
     } catch(Exception e){}
 
@@ -50,7 +50,12 @@ public class JasonBulb implements Runnable{
 
     this.ready = true;
 
+    bulbSend(cortex.getAgName());
+
     while(true){
+      if(this.socket.isClosed()){
+        break;
+      }
       bulbReceive();
       cortex.wake();
     }
@@ -85,12 +90,15 @@ public class JasonBulb implements Runnable{
 
           String message = this.in.readLine();
 
-          if(!"".equals(message) && !cortex.isHeartbeat(message)){//if it's a valid message
+          if(!"".equals(message)){//if it's a valid message
             if(cortex.isAction(message)){//if it's an action
               cortex.confirmAction(cortex.decodeAction(message));//confirm execution
 
             } else if(cortex.isFail(message)){//if it's a fail
               cortex.failAction(cortex.decodeFail(cortex.decodeAction(message)));
+
+            } else if(cortex.isMessage(message)){
+              cortex.addToMailBox(cortex.decodeMessage(message));
 
             } else if(cortex.isPercept(message)){//then it's a percept
               List<String[]> newPercepts = cortex.splitPercepts(cortex.decodePercept(message));
@@ -107,11 +115,23 @@ public class JasonBulb implements Runnable{
         }
       } catch(Exception e) {
         e.printStackTrace();
+        this.out.close();
+
+        try{
+          this.in.close();
+          this.socket.close();
+        } catch(Exception closeException){
+          closeException.printStackTrace();
+        }
       }
     }
   }
     // get the socket instance
   private Socket getSocket() {
        return socket;
+  }
+
+  public boolean isReady() {
+    return this.ready;
   }
 }

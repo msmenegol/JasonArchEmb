@@ -4,8 +4,11 @@ import jason.asSemantics.*;
 import jason.asSyntax.*;
 import jason.infra.centralised.BaseCentralisedMAS;
 import java.util.*;
+import java.util.zip.*;
 import java.util.concurrent.*;
 import java.util.logging.*;
+import java.io.*;
+import jaca.*;
 /**
  * Example of an agent that only uses Jason BDI engine. It runs without all
  * Jason IDE stuff. (see Jason FAQ for more information about this example)
@@ -46,6 +49,7 @@ public class EJasonArch extends AgArch {
     // this method just add some perception for the agent
   @Override
   public Collection<Literal> perceive() {
+      super.perceive();
       Collection<Literal> p = new ArrayList<Literal>();//super.perceive();
       p.addAll(this.worldState);
       //p.addAll();
@@ -53,10 +57,24 @@ public class EJasonArch extends AgArch {
       return p;
   }
 
+  protected CAgentArch getCartagoArch() {
+    AgArch arch = getTS().getUserAgArch().getFirstAgArch();
+    while (arch != null) {
+        if (arch instanceof CAgentArch) {
+            return (CAgentArch)arch;
+        }
+        arch = arch.getNextAgArch();
+    }
+    return null;
+  }
+
     // this method get the agent actions
   @Override
   public void act(ActionExec action) {
+    //System.out.println(action.toString());
+    if(action.getActionTerm().getNS().toString().equals("ext")){
       waitingConfirmList.put(action,actionToString(action));
+      System.out.println(actionToString(action));
       boolean done = bulb.bulbSend(encodeAction(actionToString(action)));
 
       if(!done){
@@ -65,6 +83,30 @@ public class EJasonArch extends AgArch {
         actionExecuted(action);
         System.out.println("action fail");
       }
+    }
+    else{
+      System.out.println("mandei pro cartago");
+      super.act(action);
+    }
+  }
+
+  private static Object stringToObject( String s ) throws IOException , ClassNotFoundException {
+     byte [] data = Base64.getDecoder().decode( s );
+     GZIPInputStream gzipIn = new GZIPInputStream(new ByteArrayInputStream(data));
+     ObjectInputStream ois = new ObjectInputStream( gzipIn );
+     Object o  = ois.readObject();
+     ois.close();
+     return o;
+  }
+
+  private static String objectToString( Serializable o ) throws IOException {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    GZIPOutputStream gzipOut = new GZIPOutputStream(baos);
+    ObjectOutputStream oos = new ObjectOutputStream( gzipOut );
+    oos.writeObject( o );
+    oos.flush();
+    oos.close();
+    return Base64.getEncoder().encodeToString(baos.toByteArray());
   }
 
   @Override
@@ -73,6 +115,8 @@ public class EJasonArch extends AgArch {
     Message im = new Message(); // pega a msgs da tua conexao
     while (!this.mailBox.isEmpty()) {
       im = this.mailBox.remove(0); // pega  aprox. msgs da tua conexao
+      System.out.println("Content is of type: " + im.getPropCont().getClass().getName());
+      System.out.println("Received message: " + im.toString());
       C.addMsg(im);
       if (logger.isLoggable(Level.FINE)) logger.fine("received message: " + im);
     }
@@ -80,7 +124,17 @@ public class EJasonArch extends AgArch {
 
   @Override
   public void sendMsg(jason.asSemantics.Message m) throws Exception {
-    boolean sent = bulb.bulbSend(encodeMessage(m.toString()));
+
+    // if content is an mapped object, use it
+    if (m.getPropCont() instanceof Atom) {
+        Object o = getCartagoArch().getJavaLib().getObject((Atom)m.getPropCont());
+        if (o != null)
+                m.setPropCont(o);
+    }
+
+    String recipient = m.getReceiver();
+    String recipientWithMessage = recipient + "," + this.objectToString(m);
+    boolean sent = bulb.bulbSend(encodeMessage(recipientWithMessage));
     if(!sent){
       throw new Exception("Message not sent");
     }
@@ -89,15 +143,16 @@ public class EJasonArch extends AgArch {
   //broadcasts are the same as send, but the destination is null
   @Override
   public void broadcast(jason.asSemantics.Message m) throws Exception {
-    boolean sent = bulb.bulbSend(encodeMessage(m.toString()));
+    String recipientWithMessage = "," + this.objectToString(m);
+    boolean sent = bulb.bulbSend(encodeMessage(recipientWithMessage));
     if(!sent){
       throw new Exception("Broadcast not sent");
     }
   }
 
   public void addToMailBox(String strMsg){
-    try{
-      this.mailBox.add(Message.parseMsg(strMsg));
+    try{//Message.parseMsg(strMsg)
+      this.mailBox.add( new Message( (Message) this.stringToObject(strMsg)));
     } catch(Exception e){
       e.printStackTrace();
     }
