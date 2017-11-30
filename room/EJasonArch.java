@@ -124,16 +124,8 @@ public class EJasonArch extends AgArch {
 
   @Override
   public void sendMsg(jason.asSemantics.Message m) throws Exception {
-
-    // if content is an mapped object, use it
-    if (m.getPropCont() instanceof Atom) {
-        Object o = getCartagoArch().getJavaLib().getObject((Atom)m.getPropCont());
-        if (o != null)
-                m.setPropCont(o);
-    }
-
     String recipient = m.getReceiver();
-    String recipientWithMessage = recipient + "," + this.objectToString(m);
+    String recipientWithMessage = recipient + "," + this.objectToString(this.setPropContAsObject(m));
     boolean sent = bulb.bulbSend(encodeMessage(recipientWithMessage));
     if(!sent){
       throw new Exception("Message not sent");
@@ -143,11 +135,21 @@ public class EJasonArch extends AgArch {
   //broadcasts are the same as send, but the destination is null
   @Override
   public void broadcast(jason.asSemantics.Message m) throws Exception {
-    String recipientWithMessage = "," + this.objectToString(m);
+    String recipientWithMessage = "," + this.objectToString(this.setPropContAsObject(m));
     boolean sent = bulb.bulbSend(encodeMessage(recipientWithMessage));
     if(!sent){
       throw new Exception("Broadcast not sent");
     }
+  }
+
+  private jason.asSemantics.Message setPropContAsObject(jason.asSemantics.Message m){
+    if (m.getPropCont() instanceof Atom) {
+        Object o = getCartagoArch().getJavaLib().getObject((Atom)m.getPropCont());
+        if (o != null){
+                m.setPropCont(o);
+        }
+    }
+    return m;
   }
 
   public void addToMailBox(String strMsg){
